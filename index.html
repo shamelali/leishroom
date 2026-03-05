@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Leish! Update Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Martian+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+:root{
+  --bg:#0a0709;--s1:#0d0a0c;--s2:#130e11;--s3:#1a1217;
+  --rule:#2a1e24;--rule2:#3a2830;
+  --ink:#d8c8d0;--dim:#7a6570;--faint:#3d2d35;
+  --berry:#9b3d5f;--rose:#c06080;--gold:#c0905a;
+  --green:#4a8a60;--red:#b04848;
+}
+body{font-family:'Martian Mono',monospace;background:var(--bg);color:var(--ink);}
+.screen{position:fixed;inset:0;display:none;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* ── LOGIN ─────────────────────────────────── */
+#screen-login{flex-direction:row;align-items:stretch;}
+.login-id{
+  width:36%;border-right:1px solid var(--rule);
+  padding:60px 52px;background:var(--s1);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.login-wordmark{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);}
+.login-name{font-family:'Instrument Serif',serif;font-size:clamp(44px,5.5vw,72px);line-height:.92;color:#f0ecea;margin-bottom:8px;}
+.login-name em{font-style:italic;color:var(--berry);}
+.login-tagline{font-size:9px;letter-spacing:.08em;color:var(--dim);margin-bottom:44px;}
+.ls-list{display:flex;flex-direction:column;gap:9px;}
+.ls-row{display:flex;align-items:center;gap:9px;font-size:9px;letter-spacing:.05em;color:var(--dim);}
+.ls-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.ls-dot.on{background:#f0ecea;}
+.ls-dot.off{background:var(--faint);}
+.login-footer{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
+
+.login-portals{flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px 52px;}
+.portals-label{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--faint);margin-bottom:28px;}
+.portal{border-top:1px solid var(--rule);padding:22px 0;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;transition:all .15s;}
+.portal:last-child{border-bottom:1px solid var(--rule);}
+.portal:hover{background:rgba(255,255,255,.015);margin:0 -18px;padding-left:18px;padding-right:18px;}
+.p-type{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--berry);margin-bottom:4px;}
+.p-type.adm{color:var(--gold);}
+.p-title{font-family:'Instrument Serif',serif;font-size:21px;color:#f0ecea;}
+.p-right{display:flex;flex-direction:column;gap:5px;align-items:flex-end;min-width:188px;}
+.p-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--rule);font-family:'Martian Mono',monospace;font-size:11px;color:var(--ink);padding:6px 0;outline:none;letter-spacing:.1em;text-align:right;transition:border-color .2s;}
+.p-input::placeholder{color:var(--faint);}
+.p-input:focus{border-bottom-color:#f0ecea;}
+.p-input.error{border-bottom-color:var(--berry);}
+.p-btn{width:100%;padding:7px 0;border:none;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+.p-btn.inv{background:#f0ecea;color:#0a0709;}
+.p-btn.inv:hover,.p-btn.stf:hover{background:var(--berry);color:#f0ecea;}
+.p-btn.stf{background:#f0ecea;color:#0a0709;}
+.p-btn.adm{background:var(--gold);color:#0a0709;}
+.p-btn.adm:hover{background:var(--rose);color:#f0ecea;}
+.p-hint{font-size:8px;color:var(--faint);text-align:right;}
+.p-err{font-size:8px;color:var(--berry);text-align:right;display:none;}
+
+/* ── SHARED TOPBAR ─────────────────────────── */
+.top-bar{height:44px;min-height:44px;flex-shrink:0;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:var(--s1);}
+.bar-brand{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
+.bar-brand strong{color:var(--ink);font-weight:500;}
+.bar-tabs{display:flex;}
+.bar-tab{padding:0 15px;height:44px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'Martian Mono',monospace;margin-bottom:-1px;transition:all .15s;}
+.bar-tab:hover{color:var(--ink);}
+.bar-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
+.bar-tab.adm-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.bar-right{display:flex;align-items:center;gap:18px;}
+.bar-meta{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+.exit-btn{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);background:none;border:none;cursor:pointer;font-family:'Martian Mono',monospace;transition:color .15s;}
+.exit-btn:hover{color:var(--ink);}
+
+/* ── DATA LOUNGE ───────────────────────────── */
+#screen-dataroom{background:var(--bg);}
+.dr-body{flex:1;overflow-y:auto;padding:44px 36px 80px;max-width:820px;margin:0 auto;width:100%;}
+.dr-sect{display:none;}
+.dr-sect.active{display:block;animation:appear .3s ease both;}
+.dr-eyebrow{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;}
+.dr-h1{font-family:'Instrument Serif',serif;font-size:clamp(30px,4vw,46px);color:#f0ecea;line-height:1.05;margin-bottom:10px;}
+.dr-h1 em{font-style:italic;color:var(--berry);}
+.dr-lead{font-size:11px;color:var(--dim);line-height:1.85;max-width:500px;margin-bottom:36px;}
+.dr-rule{height:1px;background:var(--rule);margin:28px 0;}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);margin-bottom:36px;}
+.kpi-box{padding:18px 20px;border-right:1px solid var(--rule);}
+.kpi-box:last-child{border-right:none;}
+.kpi-v{font-family:'Instrument Serif',serif;font-size:26px;color:#f0ecea;line-height:1;margin-bottom:4px;}
+.kpi-l{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.data-block{margin-bottom:28px;}
+.dbt{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--rule);}
+.data-li{font-size:11px;color:var(--dim);padding:7px 0 7px 14px;border-bottom:1px solid rgba(42,30,36,.6);position:relative;line-height:1.6;}
+.data-li::before{content:'—';position:absolute;left:0;color:var(--faint);}
+.data-li:last-child{border-bottom:none;}
+.data-li strong{color:var(--ink);font-weight:500;}
+.tt{width:100%;border-collapse:collapse;}
+.tt th{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:7px 0;text-align:left;border-bottom:1px solid var(--rule);}
+.tt td{font-size:11px;color:var(--dim);padding:9px 0;border-bottom:1px solid rgba(42,30,36,.5);}
+.tt td:first-child{color:var(--ink);}
+.tt tr:last-child td{border-bottom:none;}
+.thi{color:var(--ink)!important;font-weight:500;}
+.tgr{color:var(--green)!important;}
+.trd{color:var(--berry)!important;}
+.tgo{color:var(--gold)!important;}
+
+/* ── STAFF CONSOLE ─────────────────────────── */
+#screen-staff{background:var(--bg);}
+.staff-body{flex:1;overflow-y:auto;}
+.sv{display:none;}
+.sv.active{display:block;animation:appear .25s ease both;}
+.ann-page{max-width:640px;margin:0 auto;padding:48px 36px 90px;}
+.ann-hdr{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:18px;border-bottom:2px solid #f0ecea;}
+.ann-hdr-title{font-family:'Instrument Serif',serif;font-size:34px;color:#f0ecea;}
+.ann-hdr-meta{font-size:9px;color:var(--dim);letter-spacing:.06em;}
+.ann-item{border-bottom:1px solid var(--rule);padding:22px 0;display:grid;grid-template-columns:36px 1fr 68px;gap:0 18px;align-items:start;transition:all .12s;}
+.ann-item:hover{margin:0 -18px;padding-left:18px;padding-right:18px;background:rgba(255,255,255,.012);}
+.ann-num{font-size:9px;color:var(--faint);padding-top:2px;font-variant-numeric:tabular-nums;}
+.ann-tr{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.ann-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
+.ann-dot.pinned{background:#f0ecea;}
+.ann-dot.urgent{background:var(--berry);}
+.ann-dot.update{background:var(--faint);}
+.ann-dot.action{background:var(--gold);}
+.ann-typ{font-size:7px;letter-spacing:.22em;text-transform:uppercase;}
+.ann-typ.pinned{color:#f0ecea;}
+.ann-typ.urgent{color:var(--berry);}
+.ann-typ.update{color:var(--dim);}
+.ann-typ.action{color:var(--gold);}
+.ann-ttl{font-family:'Instrument Serif',serif;font-size:19px;color:#f0ecea;line-height:1.2;margin-bottom:6px;}
+.ann-body{font-size:11px;color:var(--dim);line-height:1.8;}
+.ann-body strong{color:var(--ink);font-weight:500;}
+.ann-date-col{font-size:8px;color:var(--faint);padding-top:2px;text-align:right;white-space:nowrap;}
+.plain-page{max-width:640px;margin:0 auto;padding:48px 36px 90px;}
+.plain-title{font-family:'Instrument Serif',serif;font-size:34px;color:#f0ecea;border-bottom:2px solid #f0ecea;padding-bottom:16px;}
+.st-table{width:100%;border-collapse:collapse;margin-top:24px;}
+.st-table th{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:0 0 9px;text-align:left;border-bottom:1px solid var(--rule);}
+.st-table td{font-size:11px;color:var(--dim);padding:11px 0;border-bottom:1px solid rgba(42,30,36,.5);vertical-align:top;}
+.st-table td:first-child{color:var(--ink);width:48%;}
+.st-table tr:last-child td{border-bottom:none;}
+.s-done{color:var(--green)!important;}
+.s-wip{color:var(--gold)!important;}
+.s-todo{color:var(--berry)!important;}
+.task-list{margin-top:24px;}
+.task-row{display:flex;align-items:flex-start;gap:14px;padding:11px 0;border-bottom:1px solid rgba(42,30,36,.5);}
+.task-row:last-child{border-bottom:none;}
+.t-num{font-size:9px;color:var(--faint);padding-top:1px;min-width:22px;}
+.t-body{flex:1;}
+.t-text{font-size:11px;color:var(--ink);margin-bottom:2px;}
+.t-meta{font-size:9px;color:var(--dim);}
+.t-badge{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 5px;flex-shrink:0;margin-top:2px;}
+.t-hi{background:rgba(155,61,95,.15);color:var(--berry);}
+.t-med{background:rgba(192,144,90,.15);color:var(--gold);}
+.t-lo{background:rgba(74,138,96,.15);color:var(--green);}
+
+/* ── ADMIN PANEL ───────────────────────────── */
+#screen-admin{background:var(--bg);}
+.admin-body{flex:1;overflow-y:auto;}
+.av{display:none;}
+.av.active{display:block;animation:appear .25s ease both;}
+.admin-page{max-width:720px;margin:0 auto;padding:44px 36px 90px;}
+.adm-hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:0;}
+.adm-hdr-title{font-family:'Instrument Serif',serif;font-size:28px;color:#f0ecea;}
+.adm-add-btn{padding:6px 14px;background:var(--gold);border:none;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#0a0709;cursor:pointer;transition:all .15s;}
+.adm-add-btn:hover{background:var(--rose);color:#f0ecea;}
+.adm-row{border-bottom:1px solid var(--rule);padding:14px 0;display:flex;align-items:center;gap:12px;}
+.adm-row:last-child{border-bottom:none;}
+.adm-row-body{flex:1;min-width:0;}
+.adm-row-title{font-size:11px;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.adm-row-meta{font-size:9px;color:var(--dim);}
+.adm-actions{display:flex;gap:6px;flex-shrink:0;}
+.adm-btn{padding:4px 10px;border:1px solid var(--rule);background:transparent;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.06em;color:var(--dim);cursor:pointer;transition:all .15s;}
+.adm-btn:hover{border-color:var(--ink);color:var(--ink);}
+.adm-btn.del:hover{border-color:var(--berry);color:var(--berry);}
+.adm-chip{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;margin-right:6px;display:inline-block;}
+.chip-pinned{background:rgba(240,236,234,.1);color:#f0ecea;}
+.chip-urgent{background:rgba(155,61,95,.15);color:var(--berry);}
+.chip-update{background:rgba(42,30,36,.8);color:var(--dim);}
+.chip-action{background:rgba(192,144,90,.12);color:var(--gold);}
+.chip-done{background:rgba(74,138,96,.12);color:var(--green);}
+.chip-wip{background:rgba(192,144,90,.12);color:var(--gold);}
+.chip-todo{background:rgba(155,61,95,.12);color:var(--berry);}
+.chip-hi{background:rgba(155,61,95,.12);color:var(--berry);}
+.chip-med{background:rgba(192,144,90,.12);color:var(--gold);}
+.chip-lo{background:rgba(74,138,96,.12);color:var(--green);}
+.empty-state{padding:24px 0;font-size:10px;color:var(--faint);letter-spacing:.06em;}
+
+/* ── MODAL ─────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--s2);border:1px solid var(--rule2);width:100%;max-width:500px;transform:translateY(10px);transition:transform .2s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-head{padding:18px 22px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Instrument Serif',serif;font-size:20px;color:#f0ecea;}
+.modal-close{background:none;border:none;color:var(--dim);cursor:pointer;font-size:16px;line-height:1;padding:2px;transition:color .15s;}
+.modal-close:hover{color:var(--ink);}
+.modal-body{padding:22px;}
+.field{margin-bottom:16px;}
+.field-label{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:block;}
+.field-input,.field-select,.field-textarea{width:100%;background:var(--s3);border:1px solid var(--rule);font-family:'Martian Mono',monospace;font-size:11px;color:var(--ink);padding:8px 11px;outline:none;transition:border-color .2s;}
+.field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--ink);}
+.field-select{appearance:none;cursor:pointer;}
+.field-textarea{resize:vertical;min-height:76px;line-height:1.6;}
+option{background:var(--s2);}
+.modal-foot{padding:0 22px 18px;display:flex;gap:8px;justify-content:flex-end;}
+.modal-cancel{padding:7px 14px;background:transparent;border:1px solid var(--rule);font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);cursor:pointer;transition:all .15s;}
+.modal-cancel:hover{border-color:var(--ink);color:var(--ink);}
+.modal-save{padding:7px 18px;background:#f0ecea;border:none;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#0a0709;cursor:pointer;transition:all .15s;}
+.modal-save:hover{background:var(--gold);}
+
+@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
+
+/* ── LANG TOGGLE ───────────────────────────── */
+#lang-toggle{
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  display:flex;background:var(--s2);border:1px solid var(--rule2);
+  overflow:hidden;
+}
+.lang-btn{
+  padding:7px 12px;font-family:'Martian Mono',monospace;
+  font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  background:none;border:none;color:var(--dim);cursor:pointer;
+  transition:all .15s;
+}
+.lang-btn.active{background:#f0ecea;color:#0a0709;}
+.lang-btn:not(.active):hover{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════════════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-id">
+    <div class="login-wordmark">LUS — 01</div>
+    <div>
+      <div class="login-name">Leish!<br><em>Update</em><br>Suite</div>
+      <div class="login-tagline" data-i18n="tagline">March 2026</div>
+      <div class="ls-list">
+        <div class="ls-row"><div class="ls-dot on"></div><span data-i18n="s1">Platform live</span></div>
+        <div class="ls-row"><div class="ls-dot on"></div><span data-i18n="s2">Payments operational</span></div>
+        <div class="ls-row"><div class="ls-dot off"></div><span data-i18n="s3">Phase 6 in progress</span></div>
+        <div class="ls-row"><div class="ls-dot off"></div><span data-i18n="s4">Seed round open — RM 200K</span></div>
+      </div>
+    </div>
+    <div class="login-footer" data-i18n="footer">Confidential · Authorised users only</div>
+  </div>
+
+  <div class="login-portals">
+    <div class="portals-label" data-i18n="selectPortal">Select portal</div>
+
+    <div class="portal">
+      <div>
+        <div class="p-type" data-i18n="investorAccess">Investor Access</div>
+        <div class="p-title" data-i18n="dataLounge">Data Lounge</div>
+      </div>
+      <div class="p-right">
+        <input class="p-input" type="password" id="pwd-investor" placeholder="access code" autocomplete="off"/>
+        <button class="p-btn inv" onclick="tryLogin('investor')" data-i18n="enter">Enter →</button>
+        <div class="p-hint" data-i18n="codeHint1">Code: leish2026</div>
+        <div class="p-err" id="err-investor" data-i18n="incorrectCode">Incorrect code</div>
+      </div>
+    </div>
+
+    <div class="portal">
+      <div>
+        <div class="p-type" data-i18n="staffAccess">Staff Access</div>
+        <div class="p-title" data-i18n="console">Console</div>
+      </div>
+      <div class="p-right">
+        <input class="p-input" type="password" id="pwd-staff" placeholder="staff code" autocomplete="off"/>
+        <button class="p-btn stf" onclick="tryLogin('staff')" data-i18n="enter">Enter →</button>
+        <div class="p-hint" data-i18n="codeHint2">Code: staff2026</div>
+        <div class="p-err" id="err-staff" data-i18n="incorrectCode">Incorrect code</div>
+      </div>
+    </div>
+
+    <div class="portal">
+      <div>
+        <div class="p-type adm" data-i18n="adminAccess">Admin Access</div>
+        <div class="p-title" data-i18n="adminPanel">Admin Panel</div>
+      </div>
+      <div class="p-right">
+        <input class="p-input" type="password" id="pwd-admin" placeholder="admin code" autocomplete="off"/>
+        <button class="p-btn adm" onclick="tryLogin('admin')" data-i18n="enter">Enter →</button>
+        <div class="p-hint" data-i18n="codeHint3">Code: admin2026</div>
+        <div class="p-err" id="err-admin" data-i18n="incorrectCode">Incorrect code</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DATA LOUNGE ════════════════════════ -->
+<div class="screen" id="screen-dataroom">
+  <div class="top-bar">
+    <div class="bar-brand"><strong>Leish</strong> / <span data-i18n="dataLounge">Data Lounge</span></div>
+    <div class="bar-tabs">
+      <button class="bar-tab active" onclick="drTab('overview',this)" data-i18n="tabOverview">Overview</button>
+      <button class="bar-tab" onclick="drTab('market',this)" data-i18n="tabMarket">Market</button>
+      <button class="bar-tab" onclick="drTab('product',this)" data-i18n="tabProduct">Product</button>
+      <button class="bar-tab" onclick="drTab('financials',this)" data-i18n="tabFinancials">Financials</button>
+      <button class="bar-tab" onclick="drTab('team',this)" data-i18n="tabTeam">Team</button>
+      <button class="bar-tab" onclick="drTab('ask',this)" data-i18n="tabAsk">The Ask</button>
+    </div>
+    <div class="bar-right">
+      <span class="bar-meta" data-i18n="confidential">Confidential · Seed Round</span>
+      <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
+    </div>
+  </div>
+  <div class="dr-body">
+    <div class="dr-sect active" id="dr-overview">
+      <div class="dr-eyebrow">Investor Data Lounge · March 2026</div>
+      <div class="dr-h1">Leish —<br><em>Find Your MUA</em></div>
+      <div class="dr-lead">Malaysia's beauty marketplace connecting clients with professional makeup artists. Portfolio-first. Booking-ready. AI-matched. No dominant competitor exists.</div>
+      <div class="kpi-strip">
+        <div class="kpi-box"><div class="kpi-v">RM 4.5B</div><div class="kpi-l">Market Size</div></div>
+        <div class="kpi-box"><div class="kpi-v">70%+</div><div class="kpi-l">Still via DMs</div></div>
+        <div class="kpi-box"><div class="kpi-v">RM 200K</div><div class="kpi-l">Raising</div></div>
+        <div class="kpi-box"><div class="kpi-v">Live</div><div class="kpi-l">Platform Status</div></div>
+      </div>
+      <div class="dr-rule"></div>
+      <div class="data-block">
+        <div class="dbt">Strategic advantages</div>
+        <div class="data-li"><strong>Client-first discovery</strong> — competitors build for professionals, not clients</div>
+        <div class="data-li"><strong>Portfolio-driven trust</strong> before booking — removes guesswork entirely</div>
+        <div class="data-li"><strong>AI Concierge v2</strong> — personalised MUA matching for every occasion</div>
+        <div class="data-li"><strong>Dual-sided value</strong> — tools for MUAs, discovery for clients</div>
+        <div class="data-li"><strong>First-mover</strong> in the organised Malaysian MUA booking market</div>
+        <div class="data-li"><strong>SEA expansion</strong> — Indonesia, Thailand, Philippines as natural pathways</div>
+      </div>
+      <div class="data-block">
+        <div class="dbt">Why now</div>
+        <div class="data-li">Post-pandemic freelance beauty economy surging — clients want direct MUA access</div>
+        <div class="data-li">Under-30 Malaysian women are mobile-native and platform-ready</div>
+        <div class="data-li">GRWM content exploding on TikTok and Instagram Reels</div>
+        <div class="data-li">No dominant platform — the first-mover window is open</div>
+      </div>
+    </div>
+    <div class="dr-sect" id="dr-market">
+      <div class="dr-eyebrow">02 / Market</div>
+      <div class="dr-h1">A massive market with<br><em>no clear winner</em></div>
+      <div class="dr-lead">Every major competitor markets to beauty professionals. The client-side is wide open.</div>
+      <div class="kpi-strip">
+        <div class="kpi-box"><div class="kpi-v">RM 4.5B</div><div class="kpi-l">MY Annual Market</div></div>
+        <div class="kpi-box"><div class="kpi-v">$200B+</div><div class="kpi-l">Global Market</div></div>
+        <div class="kpi-box"><div class="kpi-v">0</div><div class="kpi-l">Dominant MY Platforms</div></div>
+        <div class="kpi-box"><div class="kpi-v">SEA</div><div class="kpi-l">Expansion Pathway</div></div>
+      </div>
+      <div class="dr-rule"></div>
+      <div class="data-block">
+        <div class="dbt">Competitor comparison</div>
+        <table class="tt"><thead><tr><th>Platform</th><th>Focus</th><th>Client UX</th><th>Malaysia</th><th>TikTok</th></tr></thead>
+        <tbody>
+          <tr><td>StyleSeat</td><td class="trd">Salon mgmt</td><td class="trd">Weak</td><td class="trd">None</td><td class="trd">None</td></tr>
+          <tr><td>Booksy</td><td class="trd">Pro tools</td><td class="trd">Weak</td><td>Minimal</td><td class="trd">None</td></tr>
+          <tr><td>GlossGenius</td><td class="trd">MUA mgmt</td><td class="trd">Weak</td><td class="trd">None</td><td class="trd">None</td></tr>
+          <tr><td><strong>Leish</strong></td><td class="tgr">Client discovery</td><td class="tgr">Strong</td><td class="tgr">First-mover</td><td class="tgr">Native</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="dr-sect" id="dr-product">
+      <div class="dr-eyebrow">03 / Product</div>
+      <div class="dr-h1"><em>Live.</em> Functional.<br>Ready to scale.</div>
+      <div class="dr-lead">Phase 5 complete. Platform live with payments, AI matching, and full booking flow operational.</div>
+      <div class="dr-rule"></div>
+      <div class="data-block">
+        <div class="dbt">Stack & status</div>
+        <table class="tt"><thead><tr><th>Layer</th><th>Technology</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Frontend</td><td>Next.js 16 / React 19 / TypeScript</td><td class="tgr">Live</td></tr>
+          <tr><td>Auth & Database</td><td>Supabase</td><td class="tgr">Live</td></tr>
+          <tr><td>Payments</td><td>HitPay & Billplz</td><td class="tgr">Live</td></tr>
+          <tr><td>AI Matching</td><td>AI Concierge v2</td><td class="tgr">Live</td></tr>
+          <tr><td>Hosting</td><td>Vercel</td><td class="tgr">Live</td></tr>
+          <tr><td>Admin Portal</td><td>In development</td><td class="tgo">Phase 6</td></tr>
+        </tbody></table>
+      </div>
+      <div class="data-block">
+        <div class="dbt">Roadmap</div>
+        <div class="data-li"><strong>Phase 5 ✓</strong> — AI Concierge v2, payments, full booking flow. Complete.</div>
+        <div class="data-li"><strong>Phase 6 →</strong> — Admin portal, MUA pro dashboard, earnings analytics. In progress.</div>
+        <div class="data-li"><strong>Phase 7</strong> — Referral engine, SEO city pages, UGC loop. Q3 2026.</div>
+      </div>
+    </div>
+    <div class="dr-sect" id="dr-financials">
+      <div class="dr-eyebrow">04 / Financials</div>
+      <div class="dr-h1">Revenue model &<br><em>Year 1 projections</em></div>
+      <div class="dr-lead">15% platform commission as primary revenue. Premium listings and ads as secondary streams from month 4.</div>
+      <div class="dr-rule"></div>
+      <div class="data-block">
+        <div class="dbt">90-day KPI targets</div>
+        <table class="tt"><thead><tr><th>Metric</th><th>30 Days</th><th>60 Days</th><th>90 Days</th></tr></thead>
+        <tbody>
+          <tr><td>Social Followers</td><td>500</td><td>1,500</td><td class="thi">3,500</td></tr>
+          <tr><td>MUA Listings</td><td>25</td><td>75</td><td class="thi">150</td></tr>
+          <tr><td>Client Bookings</td><td>10</td><td>40</td><td class="thi">100</td></tr>
+          <tr><td>Website Visits/mo</td><td>500</td><td>1,500</td><td class="thi">3,000</td></tr>
+        </tbody></table>
+      </div>
+      <div class="data-block">
+        <div class="dbt">Year 1 revenue projection</div>
+        <table class="tt"><thead><tr><th>Period</th><th>Bookings/Month</th><th>Revenue</th></tr></thead>
+        <tbody>
+          <tr><td>Month 1–3</td><td>0–30</td><td style="color:var(--faint)">Pre-revenue</td></tr>
+          <tr><td>Month 4–6</td><td>~200</td><td class="thi">RM 15,000</td></tr>
+          <tr><td>Month 7–12</td><td>500+</td><td class="thi">RM 75,000+</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="dr-sect" id="dr-team">
+      <div class="dr-eyebrow">05 / Team</div>
+      <div class="dr-h1">Founders with<br><em>skin in the game</em></div>
+      <div class="dr-rule"></div>
+      <div class="data-block">
+        <div class="dbt">Leadership & committed capital</div>
+        <table class="tt"><thead><tr><th>Name</th><th>Role</th><th>Capital</th></tr></thead>
+        <tbody>
+          <tr><td>Founder</td><td>Founder & Product Owner</td><td style="color:var(--dim)">—</td></tr>
+          <tr><td>Leiynda Rahman</td><td>MUA Partner & Beauty Expert</td><td style="color:var(--dim)">—</td></tr>
+          <tr><td>Datuk Kahiril Adri Adnan</td><td>Chairman</td><td class="thi">RM 10,000</td></tr>
+          <tr><td>Syed Zulazri</td><td>Early Investor</td><td class="thi">RM 30,000</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="dr-sect" id="dr-ask">
+      <div class="dr-eyebrow">06 / The Ask</div>
+      <div class="dr-h1"><em>RM 200,000</em><br>seed round</div>
+      <div class="dr-lead">Pre-money: RM 800,000 · Post-money: RM 1,000,000 · 20% equity · Close in 60 days.</div>
+      <div class="dr-rule"></div>
+      <div class="data-block">
+        <div class="dbt">Investment tiers</div>
+        <table class="tt"><thead><tr><th>Tier</th><th>Amount</th><th>Equity</th><th>Benefits</th></tr></thead>
+        <tbody>
+          <tr><td>Seed</td><td class="thi">RM 10,000</td><td>1.25%</td><td>Early access · Founder badge</td></tr>
+          <tr><td>Angel</td><td class="thi">RM 25,000</td><td>3.125%</td><td>+ Quarterly reports · Advisory</td></tr>
+          <tr><td>Strategic</td><td class="thi">RM 50,000+</td><td>6.25%+</td><td>+ Board seat · Product input</td></tr>
+        </tbody></table>
+      </div>
+      <div class="data-block">
+        <div class="dbt">Use of funds</div>
+        <div class="data-li">Marketing & User Acquisition — <strong>RM 80,000</strong> (40%)</div>
+        <div class="data-li">MUA Partner Recruitment — <strong>RM 40,000</strong> (20%)</div>
+        <div class="data-li">Product Development Phase 6–7 — <strong>RM 50,000</strong> (25%)</div>
+        <div class="data-li">Operations & Legal — <strong>RM 20,000</strong> (10%)</div>
+        <div class="data-li">Reserve Capital — <strong>RM 10,000</strong> (5%)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STAFF CONSOLE ══════════════════════ -->
+<div class="screen" id="screen-staff">
+  <div class="top-bar">
+    <div class="bar-brand"><strong>Leish</strong> / <span data-i18n="console">Console</span></div>
+    <div class="bar-tabs">
+      <button class="bar-tab active" onclick="sv('announcements',this)" data-i18n="tabAnnouncements">Announcements</button>
+      <button class="bar-tab" onclick="sv('status',this)" data-i18n="tabStatus">Status</button>
+      <button class="bar-tab" onclick="sv('tasks',this)" data-i18n="tabTasks">Tasks</button>
+    </div>
+    <div class="bar-right">
+      <span class="bar-meta" id="staff-user"></span>
+      <span class="bar-meta" id="staff-date"></span>
+      <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
+    </div>
+  </div>
+  <div class="staff-body">
+    <div class="sv active" id="sv-announcements">
+      <div class="ann-page">
+        <div class="ann-hdr">
+          <div class="ann-hdr-title">Announcements</div>
+          <div class="ann-hdr-meta" id="ann-count-staff"></div>
+        </div>
+        <div id="ann-feed-staff"></div>
+      </div>
+    </div>
+    <div class="sv" id="sv-status">
+      <div class="plain-page">
+        <div class="plain-title">Status</div>
+        <table class="st-table">
+          <thead><tr><th>Item</th><th>Status</th><th>Owner</th></tr></thead>
+          <tbody id="status-feed-staff"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="sv" id="sv-tasks">
+      <div class="plain-page">
+        <div class="plain-title">Open Tasks</div>
+        <div class="task-list" id="task-feed-staff"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN PANEL ════════════════════════ -->
+<div class="screen" id="screen-admin">
+  <div class="top-bar">
+    <div class="bar-brand"><strong>Leish</strong> / <span style="color:var(--gold);letter-spacing:.15em" data-i18n="adminPanel">Admin Panel</span></div>
+    <div class="bar-tabs">
+      <button class="bar-tab adm-tab active" onclick="av('announcements',this)" data-i18n="tabAnnouncements">Announcements</button>
+      <button class="bar-tab adm-tab" onclick="av('status',this)" data-i18n="tabStatus">Status</button>
+      <button class="bar-tab adm-tab" onclick="av('tasks',this)" data-i18n="tabTasks">Tasks</button>
+    </div>
+    <div class="bar-right">
+      <span class="bar-meta" style="color:var(--gold)" data-i18n="adminMode">Admin Mode</span>
+      <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="av active" id="av-announcements">
+      <div class="admin-page">
+        <div class="adm-hdr">
+          <div class="adm-hdr-title" data-i18n="tabAnnouncements">Announcements</div>
+          <button class="adm-add-btn" onclick="openModal('ann',null)" data-i18n="btnNew">+ New</button>
+        </div>
+        <div id="adm-ann-list"></div>
+      </div>
+    </div>
+    <div class="av" id="av-status">
+      <div class="admin-page">
+        <div class="adm-hdr">
+          <div class="adm-hdr-title" data-i18n="statusItems">Status Items</div>
+          <button class="adm-add-btn" onclick="openModal('status',null)" data-i18n="btnNew">+ New</button>
+        </div>
+        <div id="adm-status-list"></div>
+      </div>
+    </div>
+    <div class="av" id="av-tasks">
+      <div class="admin-page">
+        <div class="adm-hdr">
+          <div class="adm-hdr-title" data-i18n="tabTasks">Tasks</div>
+          <button class="adm-add-btn" onclick="openModal('task',null)" data-i18n="btnNew">+ New</button>
+        </div>
+        <div id="adm-task-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL ══════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeOutside(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">Edit</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-save" onclick="saveModal()">Save →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ LANG TOGGLE ══════════════════════ -->
+<div id="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btn-bm" onclick="setLang('bm')">BM</button>
+</div>
+
+<script>
+// ── CREDENTIALS ──────────────────────────────
+const CREDS = { investor:'leish2026', staff:'staff2026', admin:'admin2026' };
+
+// ── DEFAULT DATA ─────────────────────────────
+const D_ANNS = [
+  {id:1,type:'pinned',title:'Seed Round Now Open',body:'The RM 200,000 seed round is officially open. Datuk Kahiril (RM 10K) and Syed Zulazri (RM 30K) committed — <strong>RM 40,000 secured</strong>. Target close: 60 days.',date:'4 Mar 2026'},
+  {id:2,type:'urgent',title:'Action Required — Privacy Policy & TOS',body:'Legal documents must be live before public launch for <strong>PDPA compliance</strong>. First draft due by 10 March. Blocking full public launch.',date:'4 Mar 2026'},
+  {id:3,type:'action',title:'Post First TikTok This Week',body:'Film a 30-second platform walkthrough. Add trending audio. Post tonight. Zero cost — potential reach of thousands.',date:'3 Mar 2026'},
+  {id:4,type:'update',title:'Phase 5 Complete — AI Concierge v2 Deployed',body:'AI-powered MUA matching is live. <strong>Phase 6</strong> has begun. Est. completion: April 2026.',date:'2 Mar 2026'},
+];
+const D_STATUS = [
+  {id:1,item:'Platform (beaute.vercel.app)',status:'Live',st:'done',owner:'Founder'},
+  {id:2,item:'Payments — HitPay & Billplz',status:'Operational',st:'done',owner:'Founder'},
+  {id:3,item:'AI Concierge v2',status:'Deployed',st:'done',owner:'Founder'},
+  {id:4,item:'Phase 6 — Admin Portal',status:'In Progress',st:'wip',owner:'Founder'},
+  {id:5,item:'Privacy Policy & TOS',status:'Pending',st:'todo',owner:'Founder'},
+  {id:6,item:'Business Entity (SSM)',status:'Pending',st:'todo',owner:'Founder'},
+  {id:7,item:'Seed Round — RM 200K',status:'Open · 20% committed',st:'wip',owner:'Founder'},
+  {id:8,item:'First TikTok Video',status:'Not posted',st:'todo',owner:'Leiynda'},
+  {id:9,item:'MUA Recruitment (target: 150)',status:'12 onboarded',st:'wip',owner:'Leiynda'},
+  {id:10,item:'Facebook Group',status:'Not created',st:'todo',owner:'Leiynda'},
+];
+const D_TASKS = [
+  {id:1,text:'Finalise Privacy Policy + Terms of Service',meta:'Legal · Due 10 Mar',p:'hi'},
+  {id:2,text:'Register business entity — SSM filing',meta:'Legal · Due 12 Mar',p:'hi'},
+  {id:3,text:'Post first TikTok — platform walkthrough',meta:'Marketing · Due 5 Mar · Leiynda',p:'hi'},
+  {id:4,text:'Configure analytics — verify events firing',meta:'Operations · Due 10 Mar',p:'hi'},
+  {id:5,text:'Onboarding email sequence',meta:'Marketing · Due 12 Mar',p:'hi'},
+  {id:6,text:'DM 10 MUAs — free profile offer',meta:'Marketing · Ongoing · Leiynda',p:'med'},
+  {id:7,text:'Set up Facebook Group "Find a MUA Near You"',meta:'Marketing · Due 8 Mar · Leiynda',p:'med'},
+  {id:8,text:'Write launch day runbook',meta:'Operations · Due 15 Mar',p:'med'},
+  {id:9,text:'Trademark check — Leish name + logo',meta:'Legal · Due 15 Mar',p:'med'},
+  {id:10,text:'Product Hunt launch page draft',meta:'Marketing · Due 20 Mar',p:'med'},
+];
+
+// ── STATE ────────────────────────────────────
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function nextId(a){return a.length?Math.max(...a.map(x=>x.id))+1:1;}
+
+let anns     = load('lus_anns',   D_ANNS);
+let statuses = load('lus_status', D_STATUS);
+let tasks    = load('lus_tasks',  D_TASKS);
+
+// ── AUTH ─────────────────────────────────────
+['investor','staff','admin'].forEach(r=>{
+  document.getElementById('pwd-'+r).addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin(r);});
+});
+
+function tryLogin(role){
+  const v = document.getElementById('pwd-'+role).value;
+  if(v !== CREDS[role]){ shake(role); return; }
+  if(role==='investor') go('screen-dataroom');
+  else if(role==='staff'){
+    const now=new Date();
+    document.getElementById('staff-date').textContent = now.toLocaleDateString('en-MY',{weekday:'short',month:'short',day:'numeric'});
+    document.getElementById('staff-user').textContent = 'Staff ·';
+    renderStaff(); go('screen-staff');
+  } else {
+    renderAdmin(); go('screen-admin');
+  }
+}
+
+function logout(){
+  go('screen-login');
+  ['investor','staff','admin'].forEach(r=>{
+    document.getElementById('pwd-'+r).value='';
+    document.getElementById('err-'+r).style.display='none';
+  });
+}
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function shake(role){
+  const el=document.getElementById('pwd-'+role);
+  el.classList.add('error'); el.style.animation='shake .4s ease';
+  document.getElementById('err-'+role).style.display='block';
+  setTimeout(()=>{el.classList.remove('error');el.style.animation='';},500);
+}
+
+// ── TAB SWITCHERS ────────────────────────────
+function drTab(id,btn){
+  document.querySelectorAll('#screen-dataroom .dr-sect').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('#screen-dataroom .bar-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('dr-'+id).classList.add('active'); btn.classList.add('active');
+}
+function sv(id,btn){
+  document.querySelectorAll('.sv').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('#screen-staff .bar-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sv-'+id).classList.add('active'); btn.classList.add('active');
+}
+function av(id,btn){
+  document.querySelectorAll('.av').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('#screen-admin .bar-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('av-'+id).classList.add('active'); btn.classList.add('active');
+}
+
+// ── LABEL MAPS ───────────────────────────────
+const TL = ()=>({pinned:t('typePinned'),urgent:t('typeUrgent'),action:t('typeAction'),update:t('typeUpdate')});
+const PL = ()=>({hi:t('priHigh'),med:t('priMed'),lo:t('priLow')});
+const SL = ()=>({done:t('stDone'),wip:t('stWip'),todo:t('stTodo')});
+
+// ── RENDER STAFF ─────────────────────────────
+function renderStaff(){
+  // Announcements
+  const pinned = anns.filter(a=>a.type==='pinned').length;
+  document.getElementById('ann-count-staff').textContent =
+    `${anns.length} ${anns.length!==1?t('annNotices'):t('annNotice')} · ${pinned} ${t('annPinned')}`;
+  document.getElementById('ann-feed-staff').innerHTML = anns.length
+    ? anns.map((a,i)=>`
+      <div class="ann-item">
+        <div class="ann-num">${String(i+1).padStart(2,'0')}</div>
+        <div>
+          <div class="ann-tr"><div class="ann-dot ${a.type}"></div><span class="ann-typ ${a.type}">${TL()[a.type]||a.type}</span></div>
+          <div class="ann-ttl">${a.title}</div>
+          ${a.body?`<div class="ann-body">${a.body}</div>`:''}
+        </div>
+        <div class="ann-date-col">${a.date}</div>
+      </div>`).join('')
+    : `<div style="padding:32px 0;font-size:10px;color:var(--faint)">${t('noAnn')}</div>`;
+
+  // Status
+  document.getElementById('status-feed-staff').innerHTML = statuses.map(s=>`
+    <tr>
+      <td>${s.item}</td>
+      <td class="s-${s.st}">${s.status}</td>
+      <td>${s.owner}</td>
+    </tr>`).join('');
+
+  // Tasks
+  document.getElementById('task-feed-staff').innerHTML = tasks.map((t_,i)=>`
+    <div class="task-row">
+      <div class="t-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="t-body"><div class="t-text">${t_.text}</div><div class="t-meta">${t_.meta}</div></div>
+      <span class="t-badge t-${t_.p}">${PL()[t_.p]||t_.p}</span>
+    </div>`).join('');
+
+  // Section titles
+  const annHdr = document.querySelector('#sv-announcements .ann-hdr-title');
+  if(annHdr) annHdr.textContent = t('annTitle');
+  const stTitle = document.querySelector('#sv-status .plain-title');
+  if(stTitle) stTitle.textContent = t('statusTitle');
+  const tkTitle = document.querySelector('#sv-tasks .plain-title');
+  if(tkTitle) tkTitle.textContent = t('tasksTitle');
+  // Table headers
+  const ths = document.querySelectorAll('#sv-status .st-table th');
+  if(ths.length>=3){
+    ths[0].textContent = lang==='bm'?'Item':'Item';
+    ths[1].textContent = lang==='bm'?'Status':'Status';
+    ths[2].textContent = lang==='bm'?'Pemilik':'Owner';
+  }
+}
+
+// ── RENDER ADMIN ─────────────────────────────
+function renderAdmin(){
+  // Announcements
+  document.getElementById('adm-ann-list').innerHTML = anns.length
+    ? anns.map(a=>`
+      <div class="adm-row">
+        <div class="adm-row-body">
+          <div class="adm-row-title"><span class="adm-chip chip-${a.type}">${TL()[a.type]||a.type}</span>${a.title}</div>
+          <div class="adm-row-meta">${a.date}${a.body?' · '+a.body.replace(/<[^>]+>/g,'').substring(0,55)+'…':''}</div>
+        </div>
+        <div class="adm-actions">
+          <button class="adm-btn" onclick="openModal('ann',${a.id})">${t('btnEdit')}</button>
+          <button class="adm-btn del" onclick="del('ann',${a.id})">${t('btnDelete')}</button>
+        </div>
+      </div>`).join('')
+    : `<div class="empty-state">${t('noAnn')}</div>`;
+
+  // Status
+  document.getElementById('adm-status-list').innerHTML = statuses.length
+    ? statuses.map(s=>`
+      <div class="adm-row">
+        <div class="adm-row-body">
+          <div class="adm-row-title"><span class="adm-chip chip-${s.st}">${SL()[s.st]||s.st}</span>${s.item}</div>
+          <div class="adm-row-meta">${s.status} · ${t('ownerLabel')} ${s.owner}</div>
+        </div>
+        <div class="adm-actions">
+          <button class="adm-btn" onclick="openModal('status',${s.id})">${t('btnEdit')}</button>
+          <button class="adm-btn del" onclick="del('status',${s.id})">${t('btnDelete')}</button>
+        </div>
+      </div>`).join('')
+    : `<div class="empty-state">${lang==='bm'?'Tiada item status':'No status items'}</div>`;
+
+  // Tasks
+  document.getElementById('adm-task-list').innerHTML = tasks.length
+    ? tasks.map(tk=>`
+      <div class="adm-row">
+        <div class="adm-row-body">
+          <div class="adm-row-title"><span class="adm-chip chip-${tk.p}">${PL()[tk.p]||tk.p}</span>${tk.text}</div>
+          <div class="adm-row-meta">${tk.meta}</div>
+        </div>
+        <div class="adm-actions">
+          <button class="adm-btn" onclick="openModal('task',${tk.id})">${t('btnEdit')}</button>
+          <button class="adm-btn del" onclick="del('task',${tk.id})">${t('btnDelete')}</button>
+        </div>
+      </div>`).join('')
+    : `<div class="empty-state">${lang==='bm'?'Tiada tugasan':'No tasks'}</div>`;
+}
+
+// ── DELETE ───────────────────────────────────
+function del(type,id){
+  if(!confirm(t('confirmDelete'))) return;
+  if(type==='ann')    { anns=anns.filter(x=>x.id!==id);         save('lus_anns',anns); }
+  if(type==='status') { statuses=statuses.filter(x=>x.id!==id); save('lus_status',statuses); }
+  if(type==='task')   { tasks=tasks.filter(x=>x.id!==id);       save('lus_tasks',tasks); }
+  renderAdmin();
+}
+
+// ── MODAL ────────────────────────────────────
+let mCtx = {type:null, id:null};
+
+function openModal(type, id){
+  mCtx = {type, id};
+  const titles = {
+    ann:    id ? t('editAnn')    : t('newAnn'),
+    status: id ? t('editStatus') : t('newStatus'),
+    task:   id ? t('editTask')   : t('newTask'),
+  };
+  document.getElementById('modal-title').textContent = titles[type];
+  document.getElementById('modal-body').innerHTML = buildForm(type,id);
+  // translate modal buttons
+  document.querySelector('.modal-cancel').textContent = t('cancel');
+  document.querySelector('.modal-save').textContent   = t('save');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function buildForm(type,id){
+  if(type==='ann'){
+    const a = id ? anns.find(x=>x.id===id) : {type:'update',title:'',body:'',date:''};
+    const now = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    return `
+      <div class="field"><label class="field-label">${t('fType')}</label>
+        <select class="field-select" id="f-type">
+          <option value="pinned"${a.type==='pinned'?' selected':''}>${t('typePinned')}</option>
+          <option value="urgent"${a.type==='urgent'?' selected':''}>${t('typeUrgent')}</option>
+          <option value="action"${a.type==='action'?' selected':''}>${t('typeAction')}</option>
+          <option value="update"${a.type==='update'?' selected':''}>${t('typeUpdate')}</option>
+        </select></div>
+      <div class="field"><label class="field-label">${t('fTitle')}</label>
+        <input class="field-input" id="f-title" value="${esc(a.title||'')}"/></div>
+      <div class="field"><label class="field-label">${t('fBody')}</label>
+        <textarea class="field-textarea" id="f-body">${a.body||''}</textarea></div>
+      <div class="field"><label class="field-label">${t('fDate')}</label>
+        <input class="field-input" id="f-date" value="${esc(a.date||now)}"/></div>`;
+  }
+  if(type==='status'){
+    const s = id ? statuses.find(x=>x.id===id) : {item:'',status:'',st:'todo',owner:''};
+    return `
+      <div class="field"><label class="field-label">${t('fItem')}</label>
+        <input class="field-input" id="f-item" value="${esc(s.item||'')}"/></div>
+      <div class="field"><label class="field-label">${t('fStatusText')}</label>
+        <input class="field-input" id="f-status" value="${esc(s.status||'')}"/></div>
+      <div class="field"><label class="field-label">${t('fStatusType')}</label>
+        <select class="field-select" id="f-st">
+          <option value="done"${s.st==='done'?' selected':''}>${t('optDone')}</option>
+          <option value="wip"${s.st==='wip'?' selected':''}>${t('optWip')}</option>
+          <option value="todo"${s.st==='todo'?' selected':''}>${t('optTodo')}</option>
+        </select></div>
+      <div class="field"><label class="field-label">${t('fOwner')}</label>
+        <input class="field-input" id="f-owner" value="${esc(s.owner||'')}"/></div>`;
+  }
+  if(type==='task'){
+    const tk = id ? tasks.find(x=>x.id===id) : {text:'',meta:'',p:'med'};
+    return `
+      <div class="field"><label class="field-label">${t('fTask')}</label>
+        <input class="field-input" id="f-text" value="${esc(tk.text||'')}"/></div>
+      <div class="field"><label class="field-label">${t('fMeta')}</label>
+        <input class="field-input" id="f-meta" value="${esc(tk.meta||'')}"/></div>
+      <div class="field"><label class="field-label">${t('fPriority')}</label>
+        <select class="field-select" id="f-p">
+          <option value="hi"${tk.p==='hi'?' selected':''}>${t('optHigh')}</option>
+          <option value="med"${tk.p==='med'?' selected':''}>${t('optMedium')}</option>
+          <option value="lo"${tk.p==='lo'?' selected':''}>${t('optLow')}</option>
+        </select></div>`;
+  }
+}
+
+function esc(s){ return String(s).replace(/"/g,'&quot;'); }
+function g(id){ const el=document.getElementById(id); return el?el.value.trim():''; }
+
+function saveModal(){
+  const {type,id} = mCtx;
+  if(type==='ann'){
+    const obj={id:id||nextId(anns),type:g('f-type'),title:g('f-title'),body:g('f-body'),date:g('f-date')};
+    if(!obj.title) return;
+    if(id){ const i=anns.findIndex(x=>x.id===id); anns[i]=obj; } else anns.unshift(obj);
+    save('lus_anns',anns);
+  }
+  if(type==='status'){
+    const obj={id:id||nextId(statuses),item:g('f-item'),status:g('f-status'),st:g('f-st'),owner:g('f-owner')};
+    if(!obj.item) return;
+    if(id){ const i=statuses.findIndex(x=>x.id===id); statuses[i]=obj; } else statuses.push(obj);
+    save('lus_status',statuses);
+  }
+  if(type==='task'){
+    const obj={id:id||nextId(tasks),text:g('f-text'),meta:g('f-meta'),p:g('f-p')};
+    if(!obj.text) return;
+    if(id){ const i=tasks.findIndex(x=>x.id===id); tasks[i]=obj; } else tasks.unshift(obj);
+    save('lus_tasks',tasks);
+  }
+  closeModal();
+  renderAdmin();
+}
+
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+function closeOutside(e){ if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+// ── LANGUAGE / I18N ──────────────────────────
+let lang = 'en';
+
+const I18N = {
+  en: {
+    // Login
+    tagline: 'March 2026',
+    s1: 'Platform live', s2: 'Payments operational',
+    s3: 'Phase 6 in progress', s4: 'Seed round open — RM 200K',
+    footer: 'Confidential · Authorised users only',
+    selectPortal: 'Select portal',
+    investorAccess: 'Investor Access', dataLounge: 'Data Lounge',
+    staffAccess: 'Staff Access', console: 'Console',
+    adminAccess: 'Admin Access', adminPanel: 'Admin Panel',
+    enter: 'Enter →',
+    codeHint1: 'Code: leish2026', codeHint2: 'Code: staff2026', codeHint3: 'Code: admin2026',
+    incorrectCode: 'Incorrect code',
+    // Topbars
+    confidential: 'Confidential · Seed Round',
+    exit: 'Exit ↩',
+    tabOverview: 'Overview', tabMarket: 'Market', tabProduct: 'Product',
+    tabFinancials: 'Financials', tabTeam: 'Team', tabAsk: 'The Ask',
+    tabAnnouncements: 'Announcements', tabStatus: 'Status', tabTasks: 'Tasks',
+    adminMode: 'Admin Mode',
+    // Admin panel
+    statusItems: 'Status Items', btnNew: '+ New',
+    btnEdit: 'Edit', btnDelete: 'Delete',
+    // Staff views
+    annTitle: 'Announcements', statusTitle: 'Status', tasksTitle: 'Open Tasks',
+    noAnn: 'No announcements yet.',
+    // Ann count
+    annNotice: 'notice', annNotices: 'notices', annPinned: 'pinned',
+    // Ann types
+    typePinned: 'Pinned', typeUrgent: 'Urgent', typeAction: 'Action Required', typeUpdate: 'Update',
+    // Priority / status labels
+    priHigh: 'High', priMed: 'Med', priLow: 'Low',
+    stDone: 'Done', stWip: 'In Progress', stTodo: 'Pending',
+    // Modal
+    editAnn: 'Edit Announcement', newAnn: 'New Announcement',
+    editStatus: 'Edit Status Item', newStatus: 'New Status Item',
+    editTask: 'Edit Task', newTask: 'New Task',
+    fType: 'Type', fTitle: 'Title', fBody: 'Body (HTML supported)', fDate: 'Date',
+    fItem: 'Item', fStatusText: 'Status Text', fStatusType: 'Status Type', fOwner: 'Owner',
+    fTask: 'Task', fMeta: 'Meta (team · due · owner)', fPriority: 'Priority',
+    optDone: 'Done / Live', optWip: 'In Progress', optTodo: 'Pending / Todo',
+    optHigh: 'High', optMedium: 'Medium', optLow: 'Low',
+    cancel: 'Cancel', save: 'Save →',
+    ownerLabel: 'Owner:',
+    confirmDelete: 'Delete this item?',
+    // Data Lounge static
+    dlEyebrow: 'Investor Data Lounge · March 2026',
+  },
+  bm: {
+    // Login
+    tagline: 'Mac 2026',
+    s1: 'Platform aktif', s2: 'Pembayaran beroperasi',
+    s3: 'Fasa 6 sedang berjalan', s4: 'Pusingan benih dibuka — RM 200K',
+    footer: 'Sulit · Pengguna yang diberi kuasa sahaja',
+    selectPortal: 'Pilih portal',
+    investorAccess: 'Akses Pelabur', dataLounge: 'Ruang Data',
+    staffAccess: 'Akses Kakitangan', console: 'Konsol',
+    adminAccess: 'Akses Pentadbir', adminPanel: 'Panel Pentadbir',
+    enter: 'Masuk →',
+    codeHint1: 'Kod: leish2026', codeHint2: 'Kod: staff2026', codeHint3: 'Kod: admin2026',
+    incorrectCode: 'Kod tidak sah',
+    // Topbars
+    confidential: 'Sulit · Pusingan Benih',
+    exit: 'Keluar ↩',
+    tabOverview: 'Gambaran', tabMarket: 'Pasaran', tabProduct: 'Produk',
+    tabFinancials: 'Kewangan', tabTeam: 'Pasukan', tabAsk: 'Permintaan',
+    tabAnnouncements: 'Pengumuman', tabStatus: 'Status', tabTasks: 'Tugasan',
+    adminMode: 'Mod Pentadbir',
+    // Admin panel
+    statusItems: 'Item Status', btnNew: '+ Tambah',
+    btnEdit: 'Sunting', btnDelete: 'Padam',
+    // Staff views
+    annTitle: 'Pengumuman', statusTitle: 'Status', tasksTitle: 'Tugasan Terbuka',
+    noAnn: 'Tiada pengumuman lagi.',
+    // Ann count
+    annNotice: 'notis', annNotices: 'notis', annPinned: 'disemat',
+    // Ann types
+    typePinned: 'Disemat', typeUrgent: 'Mendesak', typeAction: 'Tindakan Diperlukan', typeUpdate: 'Kemaskini',
+    // Priority / status labels
+    priHigh: 'Tinggi', priMed: 'Sederhana', priLow: 'Rendah',
+    stDone: 'Selesai', stWip: 'Sedang Berjalan', stTodo: 'Belum Selesai',
+    // Modal
+    editAnn: 'Sunting Pengumuman', newAnn: 'Pengumuman Baharu',
+    editStatus: 'Sunting Item Status', newStatus: 'Item Status Baharu',
+    editTask: 'Sunting Tugasan', newTask: 'Tugasan Baharu',
+    fType: 'Jenis', fTitle: 'Tajuk', fBody: 'Kandungan (HTML disokong)', fDate: 'Tarikh',
+    fItem: 'Item', fStatusText: 'Teks Status', fStatusType: 'Jenis Status', fOwner: 'Pemilik',
+    fTask: 'Tugasan', fMeta: 'Meta (pasukan · tarikh · pemilik)', fPriority: 'Keutamaan',
+    optDone: 'Selesai / Aktif', optWip: 'Sedang Berjalan', optTodo: 'Belum Selesai',
+    optHigh: 'Tinggi', optMedium: 'Sederhana', optLow: 'Rendah',
+    cancel: 'Batal', save: 'Simpan →',
+    ownerLabel: 'Pemilik:',
+    confirmDelete: 'Padam item ini?',
+    // Data Lounge static
+    dlEyebrow: 'Ruang Data Pelabur · Mac 2026',
+  }
+};
+
+function t(key){ return (I18N[lang]||I18N.en)[key] || I18N.en[key] || key; }
+
+function setLang(l){
+  lang = l;
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  document.getElementById('btn-bm').classList.toggle('active', l==='bm');
+  applyLang();
+  // Re-render dynamic content if currently visible
+  if(document.getElementById('screen-staff').classList.contains('active')) renderStaff();
+  if(document.getElementById('screen-admin').classList.contains('active')) renderAdmin();
+}
+
+function applyLang(){
+  // Apply all static data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent = t(el.getAttribute('data-i18n'));
+  });
+  // Placeholders
+  document.getElementById('pwd-investor').placeholder = lang==='bm' ? 'kod akses' : 'access code';
+  document.getElementById('pwd-staff').placeholder    = lang==='bm' ? 'kod kakitangan' : 'staff code';
+  document.getElementById('pwd-admin').placeholder    = lang==='bm' ? 'kod pentadbir' : 'admin code';
+  // Data Lounge eyebrow
+  const dlEye = document.querySelector('#dr-overview .dr-eyebrow');
+  if(dlEye) dlEye.textContent = t('dlEyebrow');
+}
+</script>
+</body>
+<!-- ══ LANG TOGGLE (floating) ══════════════════ -->
+<div id="lang-toggle" style="position:fixed;bottom:22px;right:22px;z-index:999;display:flex;background:#130e11;border:1px solid #3a2830;overflow:hidden;">
+  <button id="btn-en" onclick="setLang('en')" style="padding:7px 13px;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;background:#f0ecea;color:#0a0709;border:none;cursor:pointer;transition:all .15s;">EN</button>
+  <button id="btn-bm" onclick="setLang('bm')" style="padding:7px 13px;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;background:none;color:#7a6570;border:none;cursor:pointer;transition:all .15s;">BM</button>
+</div>
+</html
