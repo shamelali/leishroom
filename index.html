@@ -4,230 +4,315 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Leish! Update Suite</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Martian+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 :root{
-  --bg:#0a0709;--s1:#0d0a0c;--s2:#130e11;--s3:#1a1217;
-  --rule:#2a1e24;--rule2:#3a2830;
-  --ink:#d8c8d0;--dim:#7a6570;--faint:#3d2d35;
-  --berry:#9b3d5f;--rose:#c06080;--gold:#c0905a;
-  --green:#4a8a60;--red:#b04848;
+  --bg:#f7f4ef;
+  --bg2:#efe9e0;
+  --bg3:#e6ddd0;
+  --ink:#1a1410;
+  --ink2:#3d342a;
+  --ink3:#6b5c4e;
+  --dim:#9a8878;
+  --faint:#c4b5a5;
+  --rule:#d4c8b8;
+  --rule2:#c0b09a;
+  --berry:#8b2252;
+  --rose:#b54070;
+  --gold:#9a6b20;
+  --gold2:#c4891a;
+  --green:#2d6b45;
+  --red:#8b2222;
+  --navy:#1a2840;
+  --s1:#f2ede5;
+  --s2:#ede5d8;
+  --s3:#e5dace;
 }
-body{font-family:'Martian Mono',monospace;background:var(--bg);color:var(--ink);}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--ink);}
 .screen{position:fixed;inset:0;display:none;flex-direction:column;}
 .screen.active{display:flex;}
 
 /* ── LOGIN ─────────────────────────────────── */
 #screen-login{flex-direction:row;align-items:stretch;}
 .login-id{
-  width:36%;border-right:1px solid var(--rule);
-  padding:60px 52px;background:var(--s1);
+  width:38%;border-right:2px solid var(--rule);
+  padding:64px 56px;background:var(--ink);
   display:flex;flex-direction:column;justify-content:space-between;
 }
-.login-wordmark{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);}
-.login-name{font-family:'Instrument Serif',serif;font-size:clamp(44px,5.5vw,72px);line-height:.92;color:#f0ecea;margin-bottom:8px;}
-.login-name em{font-style:italic;color:var(--berry);}
-.login-tagline{font-size:9px;letter-spacing:.08em;color:var(--dim);margin-bottom:44px;}
-.ls-list{display:flex;flex-direction:column;gap:9px;}
-.ls-row{display:flex;align-items:center;gap:9px;font-size:9px;letter-spacing:.05em;color:var(--dim);}
-.ls-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-.ls-dot.on{background:#f0ecea;}
-.ls-dot.off{background:var(--faint);}
-.login-footer{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
+.login-wordmark{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.login-name{font-family:'Playfair Display',serif;font-size:clamp(52px,5.5vw,80px);line-height:.88;color:#f7f4ef;margin-bottom:12px;}
+.login-name em{font-style:italic;color:#c4891a;}
+.login-tagline{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:52px;}
+.ls-list{display:flex;flex-direction:column;gap:14px;}
+.ls-row{display:flex;align-items:center;gap:12px;font-family:'Source Serif 4',serif;font-size:13px;color:rgba(255,255,255,.5);}
+.ls-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ls-dot.on{background:#c4891a;}
+.ls-dot.off{background:rgba(255,255,255,.2);}
+.login-footer{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);}
 
-.login-portals{flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px 52px;}
-.portals-label{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--faint);margin-bottom:28px;}
-.portal{border-top:1px solid var(--rule);padding:22px 0;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;transition:all .15s;}
+.login-portals{flex:1;display:flex;flex-direction:column;justify-content:center;padding:64px 56px;background:var(--bg);}
+.portals-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:36px;}
+.portal{border-top:1px solid var(--rule);padding:28px 0;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;transition:all .18s;}
 .portal:last-child{border-bottom:1px solid var(--rule);}
-.portal:hover{background:rgba(255,255,255,.015);margin:0 -18px;padding-left:18px;padding-right:18px;}
-.p-type{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--berry);margin-bottom:4px;}
+.portal:hover{background:rgba(154,107,32,.04);margin:0 -22px;padding-left:22px;padding-right:22px;}
+.p-type{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--berry);margin-bottom:6px;}
 .p-type.adm{color:var(--gold);}
-.p-title{font-family:'Instrument Serif',serif;font-size:21px;color:#f0ecea;}
-.p-right{display:flex;flex-direction:column;gap:5px;align-items:flex-end;min-width:188px;}
-.p-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--rule);font-family:'Martian Mono',monospace;font-size:11px;color:var(--ink);padding:6px 0;outline:none;letter-spacing:.1em;text-align:right;transition:border-color .2s;}
+.p-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);}
+.p-right{display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:200px;}
+.p-input{width:100%;background:transparent;border:none;border-bottom:2px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);padding:8px 0;outline:none;letter-spacing:.1em;text-align:right;transition:border-color .2s;}
 .p-input::placeholder{color:var(--faint);}
-.p-input:focus{border-bottom-color:#f0ecea;}
+.p-input:focus{border-bottom-color:var(--ink);}
 .p-input.error{border-bottom-color:var(--berry);}
-.p-btn{width:100%;padding:7px 0;border:none;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
-.p-btn.inv{background:#f0ecea;color:#0a0709;}
-.p-btn.inv:hover,.p-btn.stf:hover{background:var(--berry);color:#f0ecea;}
-.p-btn.stf{background:#f0ecea;color:#0a0709;}
-.p-btn.adm{background:var(--gold);color:#0a0709;}
-.p-btn.adm:hover{background:var(--rose);color:#f0ecea;}
-.p-hint{font-size:8px;color:var(--faint);text-align:right;}
-.p-err{font-size:8px;color:var(--berry);text-align:right;display:none;}
+.p-btn{width:100%;padding:11px 0;border:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .18s;}
+.p-btn.inv{background:var(--ink);color:var(--bg);}
+.p-btn.inv:hover{background:var(--berry);color:#f7f4ef;}
+.p-btn.stf{background:var(--ink);color:var(--bg);}
+.p-btn.stf:hover{background:var(--navy);color:#f7f4ef;}
+.p-btn.adm{background:var(--gold);color:#fff;}
+.p-btn.adm:hover{background:var(--rose);color:#fff;}
+.p-hint{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);text-align:right;}
+.p-err{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--berry);text-align:right;display:none;}
 
 /* ── SHARED TOPBAR ─────────────────────────── */
-.top-bar{height:44px;min-height:44px;flex-shrink:0;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:var(--s1);}
-.bar-brand{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
-.bar-brand strong{color:var(--ink);font-weight:500;}
+.top-bar{height:56px;min-height:56px;flex-shrink:0;border-bottom:2px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:var(--ink);}
+.bar-brand{font-family:'Playfair Display',serif;font-size:18px;color:rgba(247,244,239,.7);}
+.bar-brand strong{color:#f7f4ef;font-weight:700;}
+.bar-brand span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:rgba(247,244,239,.45);margin-left:6px;}
 .bar-tabs{display:flex;}
-.bar-tab{padding:0 15px;height:44px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'Martian Mono',monospace;margin-bottom:-1px;transition:all .15s;}
-.bar-tab:hover{color:var(--ink);}
-.bar-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
-.bar-tab.adm-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-.bar-right{display:flex;align-items:center;gap:18px;}
-.bar-meta{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
-.exit-btn{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);background:none;border:none;cursor:pointer;font-family:'Martian Mono',monospace;transition:color .15s;}
-.exit-btn:hover{color:var(--ink);}
+.bar-tab{padding:0 18px;height:56px;font-family:'Source Serif 4',serif;font-size:14px;color:rgba(247,244,239,.4);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;margin-bottom:-2px;transition:all .18s;}
+.bar-tab:hover{color:rgba(247,244,239,.8);}
+.bar-tab.active{color:#f7f4ef;border-bottom-color:#c4891a;}
+.bar-tab.adm-tab.active{color:#c4891a;border-bottom-color:#c4891a;}
+.bar-right{display:flex;align-items:center;gap:22px;}
+.bar-meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(247,244,239,.35);}
+.exit-btn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(247,244,239,.45);background:none;border:none;cursor:pointer;transition:color .18s;}
+.exit-btn:hover{color:#f7f4ef;}
 
 /* ── DATA LOUNGE ───────────────────────────── */
 #screen-dataroom{background:var(--bg);}
-.dr-body{flex:1;overflow-y:auto;padding:44px 36px 80px;max-width:820px;margin:0 auto;width:100%;}
+.dr-body{flex:1;overflow-y:auto;padding:52px 48px 100px;max-width:900px;margin:0 auto;width:100%;}
 .dr-sect{display:none;}
-.dr-sect.active{display:block;animation:appear .3s ease both;}
-.dr-eyebrow{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;}
-.dr-h1{font-family:'Instrument Serif',serif;font-size:clamp(30px,4vw,46px);color:#f0ecea;line-height:1.05;margin-bottom:10px;}
+.dr-sect.active{display:block;animation:appear .35s ease both;}
+.dr-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;}
+.dr-h1{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,56px);color:var(--ink);line-height:1.05;margin-bottom:14px;}
 .dr-h1 em{font-style:italic;color:var(--berry);}
-.dr-lead{font-size:11px;color:var(--dim);line-height:1.85;max-width:500px;margin-bottom:36px;}
-.dr-rule{height:1px;background:var(--rule);margin:28px 0;}
-.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);margin-bottom:36px;}
-.kpi-box{padding:18px 20px;border-right:1px solid var(--rule);}
+.dr-lead{font-size:17px;color:var(--ink3);line-height:1.9;max-width:560px;margin-bottom:44px;font-weight:300;}
+.dr-rule{height:2px;background:var(--rule);margin:36px 0;}
+
+/* KPI strip */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);margin-bottom:44px;}
+.kpi-box{padding:24px 22px;border-right:2px solid var(--ink);background:var(--bg);}
 .kpi-box:last-child{border-right:none;}
-.kpi-v{font-family:'Instrument Serif',serif;font-size:26px;color:#f0ecea;line-height:1;margin-bottom:4px;}
-.kpi-l{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
-.data-block{margin-bottom:28px;}
-.dbt{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--rule);}
-.data-li{font-size:11px;color:var(--dim);padding:7px 0 7px 14px;border-bottom:1px solid rgba(42,30,36,.6);position:relative;line-height:1.6;}
+.kpi-box.accent{background:var(--ink);}
+.kpi-box.accent .kpi-v{color:#c4891a;}
+.kpi-box.accent .kpi-l{color:rgba(247,244,239,.5);}
+.kpi-v{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);line-height:1;margin-bottom:6px;}
+.kpi-l{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+
+/* Data blocks */
+.data-block{margin-bottom:36px;}
+.dbt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--rule);}
+.data-li{font-size:15px;color:var(--ink2);padding:10px 0 10px 20px;border-bottom:1px solid var(--rule);position:relative;line-height:1.7;}
 .data-li::before{content:'—';position:absolute;left:0;color:var(--faint);}
 .data-li:last-child{border-bottom:none;}
-.data-li strong{color:var(--ink);font-weight:500;}
+.data-li strong{color:var(--ink);font-weight:600;}
+
+/* Tables */
 .tt{width:100%;border-collapse:collapse;}
-.tt th{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:7px 0;text-align:left;border-bottom:1px solid var(--rule);}
-.tt td{font-size:11px;color:var(--dim);padding:9px 0;border-bottom:1px solid rgba(42,30,36,.5);}
-.tt td:first-child{color:var(--ink);}
+.tt th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:10px 0;text-align:left;border-bottom:2px solid var(--rule);}
+.tt td{font-size:15px;color:var(--ink3);padding:13px 0;border-bottom:1px solid var(--rule);}
+.tt td:first-child{color:var(--ink);font-weight:600;}
 .tt tr:last-child td{border-bottom:none;}
-.thi{color:var(--ink)!important;font-weight:500;}
-.tgr{color:var(--green)!important;}
-.trd{color:var(--berry)!important;}
-.tgo{color:var(--gold)!important;}
+.thi{color:var(--ink)!important;font-weight:600!important;}
+.tgr{color:var(--green)!important;font-weight:600!important;}
+.trd{color:var(--red)!important;}
+.tgo{color:var(--gold)!important;font-weight:600!important;}
+
+/* ── FINANCIAL SECTION SPECIFIC ────────────── */
+.fin-year-header{
+  background:var(--ink);color:#f7f4ef;
+  padding:18px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:2px;
+}
+.fin-year-label{font-family:'Playfair Display',serif;font-size:22px;color:#f7f4ef;}
+.fin-year-label em{color:#c4891a;font-style:italic;}
+.fin-year-meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:rgba(247,244,239,.45);}
+.fin-summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border:2px solid var(--ink);margin-bottom:28px;}
+.fin-cell{padding:20px 22px;border-right:2px solid var(--ink);}
+.fin-cell:last-child{border-right:none;}
+.fin-cell.dark{background:var(--ink);}
+.fin-cell-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.fin-cell.dark .fin-cell-label{color:rgba(247,244,239,.4);}
+.fin-cell-value{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);line-height:1.1;}
+.fin-cell.dark .fin-cell-value{color:#c4891a;}
+.fin-cell-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);margin-top:4px;}
+.fin-cell.dark .fin-cell-sub{color:rgba(247,244,239,.35);}
+.fin-pos{color:var(--green)!important;}
+.fin-neg{color:var(--red)!important;}
+
+.monthly-table-wrap{overflow-x:auto;margin-bottom:28px;}
+.monthly-table{width:100%;border-collapse:collapse;min-width:700px;}
+.monthly-table th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);white-space:nowrap;}
+.monthly-table th:first-child{text-align:left;}
+.monthly-table td{font-size:13px;padding:10px 10px;text-align:right;border-bottom:1px solid var(--rule);font-family:'JetBrains Mono',monospace;}
+.monthly-table td:first-child{text-align:left;font-family:'Source Serif 4',serif;font-size:14px;font-weight:600;color:var(--ink);}
+.monthly-table tr:last-child td{border-bottom:none;}
+.monthly-table tr.subtotal td{font-weight:700;background:var(--bg2);border-top:2px solid var(--rule2);border-bottom:2px solid var(--rule2);}
+.monthly-table tr.subtotal td:first-child{color:var(--ink);}
+.monthly-table .pos{color:var(--green);}
+.monthly-table .neg{color:var(--red);}
+.monthly-table .dim{color:var(--dim);}
+
+.chart-bars-wrap{margin-bottom:28px;}
+.chart-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--rule);}
+.bar-chart{display:flex;flex-direction:column;gap:6px;}
+.bar-row{display:flex;align-items:center;gap:14px;}
+.bar-month{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);width:52px;flex-shrink:0;text-align:right;}
+.bar-track{flex:1;background:var(--bg2);height:22px;position:relative;}
+.bar-fill{height:100%;transition:width .6s ease;}
+.bar-fill.rev{background:var(--ink);}
+.bar-fill.profit{background:var(--green);}
+.bar-fill.loss{background:var(--red);opacity:.7;}
+.bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);width:90px;text-align:right;flex-shrink:0;}
+
+.projection-note{background:var(--bg2);border-left:4px solid var(--gold);padding:18px 22px;margin-bottom:28px;}
+.projection-note p{font-size:14px;color:var(--ink2);line-height:1.75;}
+.projection-note strong{color:var(--ink);font-weight:600;}
+
+.revenue-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:28px;}
+.rev-item{background:var(--bg2);padding:18px 20px;border-left:4px solid var(--rule2);}
+.rev-item.active{border-left-color:var(--ink);}
+.rev-item-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.rev-item-y1{font-family:'Playfair Display',serif;font-size:22px;color:var(--ink);}
+.rev-item-y3{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);margin-top:4px;}
 
 /* ── STAFF CONSOLE ─────────────────────────── */
 #screen-staff{background:var(--bg);}
 .staff-body{flex:1;overflow-y:auto;}
 .sv{display:none;}
-.sv.active{display:block;animation:appear .25s ease both;}
-.ann-page{max-width:640px;margin:0 auto;padding:48px 36px 90px;}
-.ann-hdr{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:18px;border-bottom:2px solid #f0ecea;}
-.ann-hdr-title{font-family:'Instrument Serif',serif;font-size:34px;color:#f0ecea;}
-.ann-hdr-meta{font-size:9px;color:var(--dim);letter-spacing:.06em;}
-.ann-item{border-bottom:1px solid var(--rule);padding:22px 0;display:grid;grid-template-columns:36px 1fr 68px;gap:0 18px;align-items:start;transition:all .12s;}
-.ann-item:hover{margin:0 -18px;padding-left:18px;padding-right:18px;background:rgba(255,255,255,.012);}
-.ann-num{font-size:9px;color:var(--faint);padding-top:2px;font-variant-numeric:tabular-nums;}
-.ann-tr{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
-.ann-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
-.ann-dot.pinned{background:#f0ecea;}
+.sv.active{display:block;animation:appear .28s ease both;}
+.ann-page{max-width:680px;margin:0 auto;padding:52px 44px 100px;}
+.ann-hdr{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:20px;border-bottom:3px solid var(--ink);}
+.ann-hdr-title{font-family:'Playfair Display',serif;font-size:38px;color:var(--ink);}
+.ann-hdr-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.06em;}
+.ann-item{border-bottom:1px solid var(--rule);padding:26px 0;display:grid;grid-template-columns:44px 1fr 76px;gap:0 20px;align-items:start;transition:all .14s;}
+.ann-item:hover{margin:0 -20px;padding-left:20px;padding-right:20px;background:rgba(154,107,32,.04);}
+.ann-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);padding-top:3px;}
+.ann-tr{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.ann-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ann-dot.pinned{background:var(--ink);}
 .ann-dot.urgent{background:var(--berry);}
 .ann-dot.update{background:var(--faint);}
 .ann-dot.action{background:var(--gold);}
-.ann-typ{font-size:7px;letter-spacing:.22em;text-transform:uppercase;}
-.ann-typ.pinned{color:#f0ecea;}
+.ann-typ{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;}
+.ann-typ.pinned{color:var(--ink);}
 .ann-typ.urgent{color:var(--berry);}
 .ann-typ.update{color:var(--dim);}
 .ann-typ.action{color:var(--gold);}
-.ann-ttl{font-family:'Instrument Serif',serif;font-size:19px;color:#f0ecea;line-height:1.2;margin-bottom:6px;}
-.ann-body{font-size:11px;color:var(--dim);line-height:1.8;}
-.ann-body strong{color:var(--ink);font-weight:500;}
-.ann-date-col{font-size:8px;color:var(--faint);padding-top:2px;text-align:right;white-space:nowrap;}
-.plain-page{max-width:640px;margin:0 auto;padding:48px 36px 90px;}
-.plain-title{font-family:'Instrument Serif',serif;font-size:34px;color:#f0ecea;border-bottom:2px solid #f0ecea;padding-bottom:16px;}
-.st-table{width:100%;border-collapse:collapse;margin-top:24px;}
-.st-table th{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:0 0 9px;text-align:left;border-bottom:1px solid var(--rule);}
-.st-table td{font-size:11px;color:var(--dim);padding:11px 0;border-bottom:1px solid rgba(42,30,36,.5);vertical-align:top;}
-.st-table td:first-child{color:var(--ink);width:48%;}
+.ann-ttl{font-family:'Playfair Display',serif;font-size:22px;color:var(--ink);line-height:1.25;margin-bottom:8px;}
+.ann-body{font-size:14px;color:var(--ink3);line-height:1.85;}
+.ann-body strong{color:var(--ink);font-weight:600;}
+.ann-date-col{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);padding-top:3px;text-align:right;white-space:nowrap;}
+.plain-page{max-width:680px;margin:0 auto;padding:52px 44px 100px;}
+.plain-title{font-family:'Playfair Display',serif;font-size:38px;color:var(--ink);border-bottom:3px solid var(--ink);padding-bottom:18px;}
+.st-table{width:100%;border-collapse:collapse;margin-top:28px;}
+.st-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);padding:0 0 12px;text-align:left;border-bottom:1px solid var(--rule);}
+.st-table td{font-size:14px;color:var(--ink3);padding:14px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+.st-table td:first-child{color:var(--ink);font-weight:600;width:48%;}
 .st-table tr:last-child td{border-bottom:none;}
-.s-done{color:var(--green)!important;}
-.s-wip{color:var(--gold)!important;}
-.s-todo{color:var(--berry)!important;}
-.task-list{margin-top:24px;}
-.task-row{display:flex;align-items:flex-start;gap:14px;padding:11px 0;border-bottom:1px solid rgba(42,30,36,.5);}
+.s-done{color:var(--green)!important;font-weight:600!important;}
+.s-wip{color:var(--gold)!important;font-weight:600!important;}
+.s-todo{color:var(--berry)!important;font-weight:600!important;}
+.task-list{margin-top:28px;}
+.task-row{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);}
 .task-row:last-child{border-bottom:none;}
-.t-num{font-size:9px;color:var(--faint);padding-top:1px;min-width:22px;}
+.t-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);padding-top:2px;min-width:26px;}
 .t-body{flex:1;}
-.t-text{font-size:11px;color:var(--ink);margin-bottom:2px;}
-.t-meta{font-size:9px;color:var(--dim);}
-.t-badge{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 5px;flex-shrink:0;margin-top:2px;}
-.t-hi{background:rgba(155,61,95,.15);color:var(--berry);}
-.t-med{background:rgba(192,144,90,.15);color:var(--gold);}
-.t-lo{background:rgba(74,138,96,.15);color:var(--green);}
+.t-text{font-size:15px;color:var(--ink);margin-bottom:4px;font-weight:600;}
+.t-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);}
+.t-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;flex-shrink:0;margin-top:3px;}
+.t-hi{background:rgba(139,34,82,.1);color:var(--berry);}
+.t-med{background:rgba(154,107,32,.12);color:var(--gold);}
+.t-lo{background:rgba(45,107,69,.1);color:var(--green);}
 
 /* ── ADMIN PANEL ───────────────────────────── */
 #screen-admin{background:var(--bg);}
 .admin-body{flex:1;overflow-y:auto;}
 .av{display:none;}
-.av.active{display:block;animation:appear .25s ease both;}
-.admin-page{max-width:720px;margin:0 auto;padding:44px 36px 90px;}
-.adm-hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:0;}
-.adm-hdr-title{font-family:'Instrument Serif',serif;font-size:28px;color:#f0ecea;}
-.adm-add-btn{padding:6px 14px;background:var(--gold);border:none;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#0a0709;cursor:pointer;transition:all .15s;}
-.adm-add-btn:hover{background:var(--rose);color:#f0ecea;}
-.adm-row{border-bottom:1px solid var(--rule);padding:14px 0;display:flex;align-items:center;gap:12px;}
+.av.active{display:block;animation:appear .28s ease both;}
+.admin-page{max-width:760px;margin:0 auto;padding:48px 44px 100px;}
+.adm-hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:0;}
+.adm-hdr-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);}
+.adm-add-btn{padding:10px 18px;background:var(--gold);border:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#fff;cursor:pointer;transition:all .15s;}
+.adm-add-btn:hover{background:var(--rose);}
+.adm-row{border-bottom:1px solid var(--rule);padding:16px 0;display:flex;align-items:center;gap:14px;}
 .adm-row:last-child{border-bottom:none;}
 .adm-row-body{flex:1;min-width:0;}
-.adm-row-title{font-size:11px;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.adm-row-meta{font-size:9px;color:var(--dim);}
-.adm-actions{display:flex;gap:6px;flex-shrink:0;}
-.adm-btn{padding:4px 10px;border:1px solid var(--rule);background:transparent;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.06em;color:var(--dim);cursor:pointer;transition:all .15s;}
+.adm-row-title{font-size:14px;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
+.adm-row-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);}
+.adm-actions{display:flex;gap:8px;flex-shrink:0;}
+.adm-btn{padding:6px 12px;border:1px solid var(--rule);background:transparent;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--dim);cursor:pointer;transition:all .15s;}
 .adm-btn:hover{border-color:var(--ink);color:var(--ink);}
 .adm-btn.del:hover{border-color:var(--berry);color:var(--berry);}
-.adm-chip{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;margin-right:6px;display:inline-block;}
-.chip-pinned{background:rgba(240,236,234,.1);color:#f0ecea;}
-.chip-urgent{background:rgba(155,61,95,.15);color:var(--berry);}
-.chip-update{background:rgba(42,30,36,.8);color:var(--dim);}
-.chip-action{background:rgba(192,144,90,.12);color:var(--gold);}
-.chip-done{background:rgba(74,138,96,.12);color:var(--green);}
-.chip-wip{background:rgba(192,144,90,.12);color:var(--gold);}
-.chip-todo{background:rgba(155,61,95,.12);color:var(--berry);}
-.chip-hi{background:rgba(155,61,95,.12);color:var(--berry);}
-.chip-med{background:rgba(192,144,90,.12);color:var(--gold);}
-.chip-lo{background:rgba(74,138,96,.12);color:var(--green);}
-.empty-state{padding:24px 0;font-size:10px;color:var(--faint);letter-spacing:.06em;}
+.adm-chip{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;margin-right:8px;display:inline-block;}
+.chip-pinned{background:rgba(26,20,16,.08);color:var(--ink);}
+.chip-urgent{background:rgba(139,34,82,.1);color:var(--berry);}
+.chip-update{background:rgba(154,136,120,.12);color:var(--dim);}
+.chip-action{background:rgba(154,107,32,.12);color:var(--gold);}
+.chip-done{background:rgba(45,107,69,.1);color:var(--green);}
+.chip-wip{background:rgba(154,107,32,.12);color:var(--gold);}
+.chip-todo{background:rgba(139,34,82,.1);color:var(--berry);}
+.chip-hi{background:rgba(139,34,82,.1);color:var(--berry);}
+.chip-med{background:rgba(154,107,32,.12);color:var(--gold);}
+.chip-lo{background:rgba(45,107,69,.1);color:var(--green);}
+.empty-state{padding:28px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.06em;}
 
 /* ── MODAL ─────────────────────────────────── */
-.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(26,20,16,.6);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{background:var(--s2);border:1px solid var(--rule2);width:100%;max-width:500px;transform:translateY(10px);transition:transform .2s;}
+.modal{background:var(--bg);border:2px solid var(--ink);width:100%;max-width:520px;transform:translateY(12px);transition:transform .2s;}
 .modal-overlay.open .modal{transform:translateY(0);}
-.modal-head{padding:18px 22px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;}
-.modal-title{font-family:'Instrument Serif',serif;font-size:20px;color:#f0ecea;}
-.modal-close{background:none;border:none;color:var(--dim);cursor:pointer;font-size:16px;line-height:1;padding:2px;transition:color .15s;}
+.modal-head{padding:22px 26px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--ink);}
+.modal-close{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;line-height:1;transition:color .15s;}
 .modal-close:hover{color:var(--ink);}
-.modal-body{padding:22px;}
-.field{margin-bottom:16px;}
-.field-label{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:block;}
-.field-input,.field-select,.field-textarea{width:100%;background:var(--s3);border:1px solid var(--rule);font-family:'Martian Mono',monospace;font-size:11px;color:var(--ink);padding:8px 11px;outline:none;transition:border-color .2s;}
+.modal-body{padding:24px 26px;}
+.field{margin-bottom:18px;}
+.field-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;display:block;}
+.field-input,.field-select,.field-textarea{width:100%;background:var(--bg2);border:1px solid var(--rule);font-family:'Source Serif 4',serif;font-size:14px;color:var(--ink);padding:10px 13px;outline:none;transition:border-color .2s;}
 .field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--ink);}
 .field-select{appearance:none;cursor:pointer;}
-.field-textarea{resize:vertical;min-height:76px;line-height:1.6;}
-option{background:var(--s2);}
-.modal-foot{padding:0 22px 18px;display:flex;gap:8px;justify-content:flex-end;}
-.modal-cancel{padding:7px 14px;background:transparent;border:1px solid var(--rule);font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);cursor:pointer;transition:all .15s;}
+.field-textarea{resize:vertical;min-height:88px;line-height:1.7;}
+option{background:var(--bg);}
+.modal-foot{padding:0 26px 22px;display:flex;gap:10px;justify-content:flex-end;}
+.modal-cancel{padding:10px 18px;background:transparent;border:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);cursor:pointer;transition:all .15s;}
 .modal-cancel:hover{border-color:var(--ink);color:var(--ink);}
-.modal-save{padding:7px 18px;background:#f0ecea;border:none;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#0a0709;cursor:pointer;transition:all .15s;}
+.modal-save{padding:10px 22px;background:var(--ink);border:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bg);cursor:pointer;transition:all .15s;}
 .modal-save:hover{background:var(--gold);}
 
-@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
-::-webkit-scrollbar{width:3px}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
 
 /* ── LANG TOGGLE ───────────────────────────── */
 #lang-toggle{
-  position:fixed;bottom:24px;right:24px;z-index:500;
-  display:flex;background:var(--s2);border:1px solid var(--rule2);
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  display:flex;background:var(--ink);border:none;
   overflow:hidden;
 }
 .lang-btn{
-  padding:7px 12px;font-family:'Martian Mono',monospace;
-  font-size:8px;letter-spacing:.18em;text-transform:uppercase;
-  background:none;border:none;color:var(--dim);cursor:pointer;
+  padding:10px 16px;font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  background:none;border:none;color:rgba(247,244,239,.4);cursor:pointer;
   transition:all .15s;
 }
-.lang-btn.active{background:#f0ecea;color:#0a0709;}
-.lang-btn:not(.active):hover{color:var(--ink);}
+.lang-btn.active{background:#c4891a;color:#fff;}
+.lang-btn:not(.active):hover{color:#f7f4ef;}
 </style>
 </head>
 <body>
@@ -296,7 +381,7 @@ option{background:var(--s2);}
 <!-- ══════════ DATA LOUNGE ════════════════════════ -->
 <div class="screen" id="screen-dataroom">
   <div class="top-bar">
-    <div class="bar-brand"><strong>Leish</strong> / <span data-i18n="dataLounge">Data Lounge</span></div>
+    <div class="bar-brand"><strong>Leish</strong> <span data-i18n="dataLounge">/ Data Lounge</span></div>
     <div class="bar-tabs">
       <button class="bar-tab active" onclick="drTab('overview',this)" data-i18n="tabOverview">Overview</button>
       <button class="bar-tab" onclick="drTab('market',this)" data-i18n="tabMarket">Market</button>
@@ -311,14 +396,16 @@ option{background:var(--s2);}
     </div>
   </div>
   <div class="dr-body">
+
+    <!-- OVERVIEW -->
     <div class="dr-sect active" id="dr-overview">
       <div class="dr-eyebrow">Investor Data Lounge · March 2026</div>
       <div class="dr-h1">Leish —<br><em>Find Your MUA</em></div>
-      <div class="dr-lead">Malaysia's beauty marketplace connecting clients with professional makeup artists. Portfolio-first. Booking-ready. AI-matched. No dominant competitor exists.</div>
+      <div class="dr-lead">Malaysia's beauty marketplace connecting clients with professional makeup artists. Portfolio-first. Booking-ready. AI-matched. No dominant competitor exists in this market.</div>
       <div class="kpi-strip">
         <div class="kpi-box"><div class="kpi-v">RM 4.5B</div><div class="kpi-l">Market Size</div></div>
         <div class="kpi-box"><div class="kpi-v">70%+</div><div class="kpi-l">Still via DMs</div></div>
-        <div class="kpi-box"><div class="kpi-v">RM 200K</div><div class="kpi-l">Raising</div></div>
+        <div class="kpi-box accent"><div class="kpi-v">RM 200K</div><div class="kpi-l">Raising Now</div></div>
         <div class="kpi-box"><div class="kpi-v">Live</div><div class="kpi-l">Platform Status</div></div>
       </div>
       <div class="dr-rule"></div>
@@ -327,108 +414,255 @@ option{background:var(--s2);}
         <div class="data-li"><strong>Client-first discovery</strong> — competitors build for professionals, not clients</div>
         <div class="data-li"><strong>Portfolio-driven trust</strong> before booking — removes guesswork entirely</div>
         <div class="data-li"><strong>AI Concierge v2</strong> — personalised MUA matching for every occasion</div>
-        <div class="data-li"><strong>Dual-sided value</strong> — tools for MUAs, discovery for clients</div>
+        <div class="data-li"><strong>Dual-sided value</strong> — tools for MUAs, seamless discovery for clients</div>
         <div class="data-li"><strong>First-mover</strong> in the organised Malaysian MUA booking market</div>
         <div class="data-li"><strong>SEA expansion</strong> — Indonesia, Thailand, Philippines as natural pathways</div>
       </div>
       <div class="data-block">
         <div class="dbt">Why now</div>
         <div class="data-li">Post-pandemic freelance beauty economy surging — clients want direct MUA access</div>
-        <div class="data-li">Under-30 Malaysian women are mobile-native and platform-ready</div>
+        <div class="data-li">Mobile-native Malaysian consumers ready for platform-based discovery</div>
         <div class="data-li">GRWM content exploding on TikTok and Instagram Reels</div>
-        <div class="data-li">No dominant platform — the first-mover window is open</div>
+        <div class="data-li">No dominant platform — the first-mover window is wide open</div>
       </div>
     </div>
+
+    <!-- MARKET -->
     <div class="dr-sect" id="dr-market">
       <div class="dr-eyebrow">02 / Market</div>
       <div class="dr-h1">A massive market with<br><em>no clear winner</em></div>
-      <div class="dr-lead">Every major competitor markets to beauty professionals. The client-side is wide open.</div>
+      <div class="dr-lead">Every major competitor markets to beauty professionals. The client-side discovery market is wide open. Estimated 50,000–80,000 active MUAs in Malaysia — almost all operating informally via Instagram DMs.</div>
       <div class="kpi-strip">
         <div class="kpi-box"><div class="kpi-v">RM 4.5B</div><div class="kpi-l">MY Annual Market</div></div>
         <div class="kpi-box"><div class="kpi-v">$200B+</div><div class="kpi-l">Global Market</div></div>
+        <div class="kpi-box accent"><div class="kpi-v">~50K</div><div class="kpi-l">Active MUAs in MY</div></div>
         <div class="kpi-box"><div class="kpi-v">0</div><div class="kpi-l">Dominant MY Platforms</div></div>
-        <div class="kpi-box"><div class="kpi-v">SEA</div><div class="kpi-l">Expansion Pathway</div></div>
       </div>
       <div class="dr-rule"></div>
       <div class="data-block">
         <div class="dbt">Competitor comparison</div>
-        <table class="tt"><thead><tr><th>Platform</th><th>Focus</th><th>Client UX</th><th>Malaysia</th><th>TikTok</th></tr></thead>
+        <table class="tt"><thead><tr><th>Platform</th><th>Focus</th><th>Client UX</th><th>Malaysia</th><th>Mobile Native</th></tr></thead>
         <tbody>
-          <tr><td>StyleSeat</td><td class="trd">Salon mgmt</td><td class="trd">Weak</td><td class="trd">None</td><td class="trd">None</td></tr>
-          <tr><td>Booksy</td><td class="trd">Pro tools</td><td class="trd">Weak</td><td>Minimal</td><td class="trd">None</td></tr>
-          <tr><td>GlossGenius</td><td class="trd">MUA mgmt</td><td class="trd">Weak</td><td class="trd">None</td><td class="trd">None</td></tr>
-          <tr><td><strong>Leish</strong></td><td class="tgr">Client discovery</td><td class="tgr">Strong</td><td class="tgr">First-mover</td><td class="tgr">Native</td></tr>
+          <tr><td>StyleSeat</td><td class="trd">Salon mgmt</td><td class="trd">Weak</td><td class="trd">None</td><td class="trd">No</td></tr>
+          <tr><td>Booksy</td><td class="trd">Pro tools</td><td class="trd">Weak</td><td>Minimal</td><td class="trd">No</td></tr>
+          <tr><td>GlossGenius</td><td class="trd">MUA mgmt</td><td class="trd">Weak</td><td class="trd">None</td><td class="trd">No</td></tr>
+          <tr><td><strong>Leish</strong></td><td class="tgr">Client discovery</td><td class="tgr">Strong</td><td class="tgr">First-mover</td><td class="tgr">Yes</td></tr>
         </tbody></table>
       </div>
+      <div class="data-block">
+        <div class="dbt">Market sizing basis</div>
+        <div class="data-li">Malaysia cosmetics market reached <strong>USD 436M in 2023</strong>, growing at 3.1% CAGR through 2028</div>
+        <div class="data-li">~100,000 weddings per year in Malaysia, average one professional MUA per event</div>
+        <div class="data-li">Average MUA salary RM 2,859/month — viable career driving professional supply growth</div>
+        <div class="data-li">SEA beauty services market: <strong>$200B+</strong> globally with underserved digital discovery layer</div>
+      </div>
     </div>
+
+    <!-- PRODUCT -->
     <div class="dr-sect" id="dr-product">
       <div class="dr-eyebrow">03 / Product</div>
       <div class="dr-h1"><em>Live.</em> Functional.<br>Ready to scale.</div>
-      <div class="dr-lead">Phase 5 complete. Platform live with payments, AI matching, and full booking flow operational.</div>
+      <div class="dr-lead">Phase 5 complete. Platform live with payments, AI matching, and full booking flow operational. Phase 6 in active development.</div>
       <div class="dr-rule"></div>
       <div class="data-block">
-        <div class="dbt">Stack & status</div>
+        <div class="dbt">Technology stack & status</div>
         <table class="tt"><thead><tr><th>Layer</th><th>Technology</th><th>Status</th></tr></thead>
         <tbody>
           <tr><td>Frontend</td><td>Next.js 16 / React 19 / TypeScript</td><td class="tgr">Live</td></tr>
-          <tr><td>Auth & Database</td><td>Supabase</td><td class="tgr">Live</td></tr>
+          <tr><td>Auth & Database</td><td>Supabase (PostgreSQL)</td><td class="tgr">Live</td></tr>
           <tr><td>Payments</td><td>HitPay & Billplz</td><td class="tgr">Live</td></tr>
           <tr><td>AI Matching</td><td>AI Concierge v2</td><td class="tgr">Live</td></tr>
-          <tr><td>Hosting</td><td>Vercel</td><td class="tgr">Live</td></tr>
+          <tr><td>Hosting</td><td>Vercel + Cloudflare</td><td class="tgr">Live</td></tr>
           <tr><td>Admin Portal</td><td>In development</td><td class="tgo">Phase 6</td></tr>
         </tbody></table>
       </div>
       <div class="data-block">
         <div class="dbt">Roadmap</div>
         <div class="data-li"><strong>Phase 5 ✓</strong> — AI Concierge v2, payments, full booking flow. Complete.</div>
-        <div class="data-li"><strong>Phase 6 →</strong> — Admin portal, MUA pro dashboard, earnings analytics. In progress.</div>
+        <div class="data-li"><strong>Phase 6 →</strong> — Admin portal, MUA pro dashboard, earnings analytics. In progress. Est. completion: April 2026.</div>
         <div class="data-li"><strong>Phase 7</strong> — Referral engine, SEO city pages, UGC loop. Q3 2026.</div>
+        <div class="data-li"><strong>Phase 8</strong> — Mobile app (Expo), SEA market expansion. Q4 2026.</div>
       </div>
     </div>
+
+    <!-- FINANCIALS -->
     <div class="dr-sect" id="dr-financials">
       <div class="dr-eyebrow">04 / Financials</div>
-      <div class="dr-h1">Revenue model &<br><em>Year 1 projections</em></div>
-      <div class="dr-lead">15% platform commission as primary revenue. Premium listings and ads as secondary streams from month 4.</div>
+      <div class="dr-h1">3-Year Financial<br><em>Projections</em></div>
+      <div class="dr-lead">Detailed monthly projections based on verified Malaysian market rates. Revenue from four streams: booking commissions (12%), MUA subscriptions, featured placements, and brand partnerships. All figures in Malaysian Ringgit (RM).</div>
+
+      <div class="projection-note">
+        <p><strong>Model basis:</strong> 25 MUA listings at launch growing 15% monthly in Y1, average booking value RM 380, 12% platform commission. Exchange rate reference: RM 4.45 / USD. Conservative assumptions calibrated against Malaysian market benchmarks.</p>
+      </div>
+
+      <!-- ANNUAL SUMMARY CARDS -->
+      <div class="dbt" style="margin-bottom:14px;">Annual summary — Year 1 to Year 3</div>
+
+      <div class="fin-year-header" style="margin-top:0;">
+        <div class="fin-year-label">Year 1 <em>— Foundation</em></div>
+        <div class="fin-year-meta">Jan 2026 – Dec 2026</div>
+      </div>
+      <div class="fin-summary-grid">
+        <div class="fin-cell"><div class="fin-cell-label">Total Revenue</div><div class="fin-cell-value">RM 149,414</div><div class="fin-cell-sub">12 months cumulative</div></div>
+        <div class="fin-cell"><div class="fin-cell-label">Gross Profit</div><div class="fin-cell-value">RM 110,430</div><div class="fin-cell-sub">73.9% gross margin</div></div>
+        <div class="fin-cell dark"><div class="fin-cell-label">EBITDA</div><div class="fin-cell-value fin-neg">(RM 41,136)</div><div class="fin-cell-sub">Investment phase — expected loss</div></div>
+      </div>
+
+      <div class="fin-year-header">
+        <div class="fin-year-label">Year 2 <em>— Growth</em></div>
+        <div class="fin-year-meta">Jan 2027 – Dec 2027</div>
+      </div>
+      <div class="fin-summary-grid">
+        <div class="fin-cell"><div class="fin-cell-label">Total Revenue</div><div class="fin-cell-value">RM 713,509</div><div class="fin-cell-sub">+378% vs Year 1</div></div>
+        <div class="fin-cell"><div class="fin-cell-label">Gross Profit</div><div class="fin-cell-value">RM 551,141</div><div class="fin-cell-sub">77.2% gross margin</div></div>
+        <div class="fin-cell dark"><div class="fin-cell-label">EBITDA</div><div class="fin-cell-value fin-pos">RM 295,960</div><div class="fin-cell-sub">41.5% EBITDA margin</div></div>
+      </div>
+
+      <div class="fin-year-header">
+        <div class="fin-year-label">Year 3 <em>— Scale</em></div>
+        <div class="fin-year-meta">Jan 2028 – Dec 2028</div>
+      </div>
+      <div class="fin-summary-grid">
+        <div class="fin-cell"><div class="fin-cell-label">Total Revenue</div><div class="fin-cell-value">RM 1,892,072</div><div class="fin-cell-sub">+165% vs Year 2</div></div>
+        <div class="fin-cell"><div class="fin-cell-label">Gross Profit</div><div class="fin-cell-value">RM 1,504,748</div><div class="fin-cell-sub">79.5% gross margin</div></div>
+        <div class="fin-cell dark"><div class="fin-cell-label">EBITDA</div><div class="fin-cell-value fin-pos">RM 1,011,821</div><div class="fin-cell-sub">53.5% EBITDA margin</div></div>
+      </div>
+
       <div class="dr-rule"></div>
-      <div class="data-block">
-        <div class="dbt">90-day KPI targets</div>
-        <table class="tt"><thead><tr><th>Metric</th><th>30 Days</th><th>60 Days</th><th>90 Days</th></tr></thead>
-        <tbody>
-          <tr><td>Social Followers</td><td>500</td><td>1,500</td><td class="thi">3,500</td></tr>
-          <tr><td>MUA Listings</td><td>25</td><td>75</td><td class="thi">150</td></tr>
-          <tr><td>Client Bookings</td><td>10</td><td>40</td><td class="thi">100</td></tr>
-          <tr><td>Website Visits/mo</td><td>500</td><td>1,500</td><td class="thi">3,000</td></tr>
-        </tbody></table>
+
+      <!-- REVENUE STREAMS -->
+      <div class="dbt" style="margin-bottom:14px;">Revenue stream breakdown</div>
+      <div class="revenue-breakdown">
+        <div class="rev-item active">
+          <div class="rev-item-label">Booking Commissions (12% of GMV)</div>
+          <div class="rev-item-y1">RM 100,320 <span style="font-size:14px;font-family:'JetBrains Mono',monospace;color:var(--dim);">Y1</span></div>
+          <div class="rev-item-y3">→ RM 996,725 by Year 3  (+894%)</div>
+        </div>
+        <div class="rev-item active">
+          <div class="rev-item-label">MUA Premium Subscriptions (RM 220/mo)</div>
+          <div class="rev-item-y1">RM 32,120 <span style="font-size:14px;font-family:'JetBrains Mono',monospace;color:var(--dim);">Y1</span></div>
+          <div class="rev-item-y3">→ RM 215,380 by Year 3  (+571%)</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-item-label">Featured Placements (from Month 7)</div>
+          <div class="rev-item-y1">RM 16,974 <span style="font-size:14px;font-family:'JetBrains Mono',monospace;color:var(--dim);">Y1</span></div>
+          <div class="rev-item-y3">→ RM 261,569 by Year 3  (+1,441%)</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-item-label">Brand Partnerships (from Year 2)</div>
+          <div class="rev-item-y1">RM 0 <span style="font-size:14px;font-family:'JetBrains Mono',monospace;color:var(--dim);">Y1</span></div>
+          <div class="rev-item-y3">→ RM 418,398 by Year 3</div>
+        </div>
       </div>
-      <div class="data-block">
-        <div class="dbt">Year 1 revenue projection</div>
-        <table class="tt"><thead><tr><th>Period</th><th>Bookings/Month</th><th>Revenue</th></tr></thead>
-        <tbody>
-          <tr><td>Month 1–3</td><td>0–30</td><td style="color:var(--faint)">Pre-revenue</td></tr>
-          <tr><td>Month 4–6</td><td>~200</td><td class="thi">RM 15,000</td></tr>
-          <tr><td>Month 7–12</td><td>500+</td><td class="thi">RM 75,000+</td></tr>
-        </tbody></table>
+
+      <!-- REVENUE CHART -->
+      <div class="chart-bars-wrap">
+        <div class="chart-label">Monthly revenue growth — all 36 months (RM)</div>
+        <div class="bar-chart" id="rev-chart"></div>
       </div>
+
+      <div class="dr-rule"></div>
+
+      <!-- MONTHLY P&L TABLE Y1 -->
+      <div class="dbt" style="margin-bottom:14px;">Year 1 — Monthly P&amp;L</div>
+      <div class="monthly-table-wrap">
+        <table class="monthly-table">
+          <thead><tr>
+            <th style="text-align:left;">Month</th>
+            <th>MUAs</th><th>Bookings</th><th>GMV (RM)</th>
+            <th>Revenue (RM)</th><th>Gross Profit (RM)</th><th>EBITDA (RM)</th><th>Cumulative (RM)</th>
+          </tr></thead>
+          <tbody id="y1-table"></tbody>
+        </table>
+      </div>
+
+      <!-- MONTHLY P&L TABLE Y2 -->
+      <div class="dbt" style="margin-bottom:14px;margin-top:36px;">Year 2 — Monthly P&amp;L</div>
+      <div class="monthly-table-wrap">
+        <table class="monthly-table">
+          <thead><tr>
+            <th style="text-align:left;">Month</th>
+            <th>MUAs</th><th>Bookings</th><th>GMV (RM)</th>
+            <th>Revenue (RM)</th><th>Gross Profit (RM)</th><th>EBITDA (RM)</th><th>Cumulative (RM)</th>
+          </tr></thead>
+          <tbody id="y2-table"></tbody>
+        </table>
+      </div>
+
+      <!-- MONTHLY P&L TABLE Y3 -->
+      <div class="dbt" style="margin-bottom:14px;margin-top:36px;">Year 3 — Monthly P&amp;L</div>
+      <div class="monthly-table-wrap">
+        <table class="monthly-table">
+          <thead><tr>
+            <th style="text-align:left;">Month</th>
+            <th>MUAs</th><th>Bookings</th><th>GMV (RM)</th>
+            <th>Revenue (RM)</th><th>Gross Profit (RM)</th><th>EBITDA (RM)</th><th>Cumulative (RM)</th>
+          </tr></thead>
+          <tbody id="y3-table"></tbody>
+        </table>
+      </div>
+
+      <div class="dr-rule"></div>
+
+      <!-- OPERATING EXPENSES -->
+      <div class="dbt" style="margin-bottom:14px;">Operating expenses — annual totals</div>
+      <table class="tt"><thead><tr><th>Expense</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead>
+      <tbody>
+        <tr><td>Founder Salaries (2 × RM 3,500/mo)</td><td>RM 84,000</td><td>RM 84,000</td><td>RM 84,000</td></tr>
+        <tr><td>Employee Salaries (new hires)</td><td class="dim">—</td><td>RM 33,600</td><td>RM 117,600</td></tr>
+        <tr><td>Hosting & Infrastructure</td><td>RM 14,166</td><td>RM 25,441</td><td>RM 45,688</td></tr>
+        <tr><td>Marketing & Advertising</td><td>RM 21,360</td><td>RM 80,100</td><td>RM 213,600</td></tr>
+        <tr><td>Legal & Compliance</td><td>RM 13,344</td><td>RM 13,344</td><td>RM 13,344</td></tr>
+        <tr><td>Software & Tools</td><td>RM 8,016</td><td>RM 8,016</td><td>RM 8,016</td></tr>
+        <tr><td>Miscellaneous / Contingency</td><td>RM 10,680</td><td>RM 10,680</td><td>RM 10,680</td></tr>
+        <tr class="subtotal-row" style="font-weight:700;"><td style="font-weight:700;">Total OPEX</td><td style="font-weight:700;color:var(--ink);">RM 151,566</td><td style="font-weight:700;color:var(--ink);">RM 255,181</td><td style="font-weight:700;color:var(--ink);">RM 492,928</td></tr>
+      </tbody></table>
+
+      <div class="dr-rule"></div>
+
+      <!-- OPERATING METRICS -->
+      <div class="dbt" style="margin-bottom:14px;">Key operating metrics</div>
+      <table class="tt"><thead><tr><th>Metric</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead>
+      <tbody>
+        <tr><td>MUA Listings (year-end)</td><td>116</td><td>293</td><td>526</td></tr>
+        <tr><td>Total Bookings (annual)</td><td>2,200</td><td>9,163</td><td>21,858</td></tr>
+        <tr><td>Gross Merchandise Value</td><td>RM 836,000</td><td>RM 3,481,940</td><td>RM 8,306,040</td></tr>
+        <tr><td>GMV CAGR (Y1 → Y3)</td><td colspan="3" class="tgr">+215% over 2 years (√(8.3M/836K)−1 = ~215%)</td></tr>
+        <tr><td>Cumulative Cash Position</td><td class="trd">(RM 41,136)</td><td class="tgr">RM 254,824</td><td class="tgr">RM 1,266,645</td></tr>
+        <tr><td>Break-even Month</td><td colspan="3">Month 10 (October Year 1)</td></tr>
+      </tbody></table>
+
     </div>
+
+    <!-- TEAM -->
     <div class="dr-sect" id="dr-team">
       <div class="dr-eyebrow">05 / Team</div>
       <div class="dr-h1">Founders with<br><em>skin in the game</em></div>
       <div class="dr-rule"></div>
       <div class="data-block">
         <div class="dbt">Leadership & committed capital</div>
-        <table class="tt"><thead><tr><th>Name</th><th>Role</th><th>Capital</th></tr></thead>
+        <table class="tt"><thead><tr><th>Name</th><th>Role</th><th>Capital Committed</th></tr></thead>
         <tbody>
-          <tr><td>Founder</td><td>Founder & Product Owner</td><td style="color:var(--dim)">—</td></tr>
-          <tr><td>Leiynda Rahman</td><td>MUA Partner & Beauty Expert</td><td style="color:var(--dim)">—</td></tr>
-          <tr><td>Datuk Kahiril Adri Adnan</td><td>Chairman</td><td class="thi">RM 10,000</td></tr>
-          <tr><td>Syed Zulazri</td><td>Early Investor</td><td class="thi">RM 30,000</td></tr>
+          <tr><td>Founder</td><td>Founder & Product Owner</td><td class="dim">—</td></tr>
+          <tr><td>Leiynda Rahman</td><td>MUA Partner & Beauty Expert</td><td class="dim">—</td></tr>
+          <tr><td>Datuk Kahiril Adri Adnan</td><td>Chairman</td><td class="tgr">RM 10,000</td></tr>
+          <tr><td>Syed Zulazri</td><td>Early Investor</td><td class="tgr">RM 30,000</td></tr>
         </tbody></table>
       </div>
+      <div class="data-block">
+        <div class="dbt">Seed round progress</div>
+        <div class="data-li"><strong>RM 40,000 committed</strong> — 20% of RM 200K target secured</div>
+        <div class="data-li">Pre-money valuation: <strong>RM 800,000</strong></div>
+        <div class="data-li">Post-money valuation: <strong>RM 1,000,000</strong></div>
+        <div class="data-li">Target close: <strong>60 days from March 2026</strong></div>
+      </div>
     </div>
+
+    <!-- THE ASK -->
     <div class="dr-sect" id="dr-ask">
       <div class="dr-eyebrow">06 / The Ask</div>
       <div class="dr-h1"><em>RM 200,000</em><br>seed round</div>
-      <div class="dr-lead">Pre-money: RM 800,000 · Post-money: RM 1,000,000 · 20% equity · Close in 60 days.</div>
+      <div class="dr-lead">Pre-money: RM 800,000 · Post-money: RM 1,000,000 · 20% equity · Close in 60 days. Model projects break-even by Month 10 with a path to RM 1M+ EBITDA by Year 3.</div>
       <div class="dr-rule"></div>
       <div class="data-block">
         <div class="dbt">Investment tiers</div>
@@ -447,14 +681,22 @@ option{background:var(--s2);}
         <div class="data-li">Operations & Legal — <strong>RM 20,000</strong> (10%)</div>
         <div class="data-li">Reserve Capital — <strong>RM 10,000</strong> (5%)</div>
       </div>
+      <div class="data-block">
+        <div class="dbt">Return scenario — Year 3</div>
+        <div class="data-li">At RM 1,011,821 EBITDA in Year 3, a <strong>10× revenue multiple</strong> on RM 1.89M revenue = RM 18.9M valuation</div>
+        <div class="data-li">RM 10,000 seed investment (1.25%) = <strong>RM 236,000 implied value</strong> at that multiple</div>
+        <div class="data-li">RM 50,000 strategic investment (6.25%) = <strong>RM 1,181,250 implied value</strong></div>
+        <div class="data-li">These projections are illustrative. Actual returns depend on market conditions and exit path.</div>
+      </div>
     </div>
-  </div>
+
+  </div><!-- /dr-body -->
 </div>
 
 <!-- ══════════ STAFF CONSOLE ══════════════════════ -->
 <div class="screen" id="screen-staff">
   <div class="top-bar">
-    <div class="bar-brand"><strong>Leish</strong> / <span data-i18n="console">Console</span></div>
+    <div class="bar-brand"><strong>Leish</strong> <span data-i18n="console">/ Console</span></div>
     <div class="bar-tabs">
       <button class="bar-tab active" onclick="sv('announcements',this)" data-i18n="tabAnnouncements">Announcements</button>
       <button class="bar-tab" onclick="sv('status',this)" data-i18n="tabStatus">Status</button>
@@ -497,14 +739,14 @@ option{background:var(--s2);}
 <!-- ══════════ ADMIN PANEL ════════════════════════ -->
 <div class="screen" id="screen-admin">
   <div class="top-bar">
-    <div class="bar-brand"><strong>Leish</strong> / <span style="color:var(--gold);letter-spacing:.15em" data-i18n="adminPanel">Admin Panel</span></div>
+    <div class="bar-brand"><strong>Leish</strong> <span style="color:#c4891a;" data-i18n="adminPanel">/ Admin Panel</span></div>
     <div class="bar-tabs">
       <button class="bar-tab adm-tab active" onclick="av('announcements',this)" data-i18n="tabAnnouncements">Announcements</button>
       <button class="bar-tab adm-tab" onclick="av('status',this)" data-i18n="tabStatus">Status</button>
       <button class="bar-tab adm-tab" onclick="av('tasks',this)" data-i18n="tabTasks">Tasks</button>
     </div>
     <div class="bar-right">
-      <span class="bar-meta" style="color:var(--gold)" data-i18n="adminMode">Admin Mode</span>
+      <span class="bar-meta" style="color:#c4891a;" data-i18n="adminMode">Admin Mode</span>
       <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
     </div>
   </div>
@@ -564,6 +806,93 @@ option{background:var(--s2);}
 // ── CREDENTIALS ──────────────────────────────
 const CREDS = { investor:'leish2026', staff:'staff2026', admin:'admin2026' };
 
+// ── FINANCIAL DATA ───────────────────────────
+const MONTHS = [
+  'Jan Y1','Feb Y1','Mar Y1','Apr Y1','May Y1','Jun Y1',
+  'Jul Y1','Aug Y1','Sep Y1','Oct Y1','Nov Y1','Dec Y1',
+  'Jan Y2','Feb Y2','Mar Y2','Apr Y2','May Y2','Jun Y2',
+  'Jul Y2','Aug Y2','Sep Y2','Oct Y2','Nov Y2','Dec Y2',
+  'Jan Y3','Feb Y3','Mar Y3','Apr Y3','May Y3','Jun Y3',
+  'Jul Y3','Aug Y3','Sep Y3','Oct Y3','Nov Y3','Dec Y3'
+];
+const FIN = {
+  mua:     [25,29,33,38,44,50,58,67,76,88,101,116,126,136,147,158,171,185,199,215,233,251,271,293,308,323,339,356,374,392,412,433,454,477,501,526],
+  bk:      [63,74,87,103,122,144,170,201,237,280,330,389,428,471,518,570,627,690,759,835,919,1011,1112,1223,1296,1374,1456,1543,1636,1734,1838,1948,2065,2189,2320,2459],
+  gmv:     [23940,28120,33060,39140,46360,54720,64600,76380,90060,106400,125400,147820,162640,178980,196840,216600,238260,262200,288420,317300,349220,384180,422560,464740,492480,522120,553280,586340,621680,658920,698440,740240,784700,831820,881600,934420],
+  rev:     [3973,4694,5507,6457,7543,8766,12592,14446,16769,19656,22669,26342,33364,36689,40299,44471,48780,53723,59098,64969,71619,78632,86517,95348,102307,109827,117902,126619,136290,146484,157743,170132,183330,197638,213365,230437],
+  gp:      [2856,3383,3966,4632,5381,6215,9580,10884,12570,14695,16821,19448,25780,28343,31120,34371,37669,41496,45649,50172,55334,60717,66813,73677,79341,85480,92101,99277,107301,115757,125173,135613,146738,158848,172254,186864],
+  ebitda:  [-9484,-9001,-8466,-7849,-7150,-6371,-3063,-1818,-195,1864,3922,6476,5037,7519,10213,13376,16581,20312,24362,28778,33828,39092,45064,51798,39201,45196,51667,58684,66542,74824,84057,94305,105227,117126,130309,144684],
+  cum:     [-9484,-18485,-26951,-34799,-41950,-48321,-51384,-53202,-53398,-51534,-47612,-41136,-36099,-28580,-18367,-4991,11590,31902,56264,85042,118870,157962,203026,254824,294025,339221,390888,449572,516114,590938,674994,769299,874526,991652,1121960,1266645]
+};
+
+function fmt(n){
+  if(n===undefined||n===null) return '—';
+  const abs = Math.abs(Math.round(n));
+  const s = abs.toLocaleString('en-MY');
+  return n<0 ? '('+s+')' : s;
+}
+function fmtK(n){
+  if(Math.abs(n)>=1000) return (n<0?'(':'')+'RM '+(Math.abs(n)/1000).toFixed(0)+'K'+(n<0?')':'');
+  return (n<0?'(':'')+'RM '+Math.abs(n).toLocaleString()+(n<0?')':'');
+}
+
+function buildMonthlyTable(tbodyId, startIdx, endIdx){
+  const tbody = document.getElementById(tbodyId);
+  if(!tbody) return;
+  let html = '';
+  for(let i=startIdx;i<endIdx;i++){
+    const e = FIN.ebitda[i], c = FIN.cum[i];
+    const eCls = e>=0?'pos':'neg', cCls = c>=0?'pos':'neg';
+    html += `<tr>
+      <td>${MONTHS[i]}</td>
+      <td class="dim">${Math.round(FIN.mua[i])}</td>
+      <td class="dim">${FIN.bk[i].toLocaleString()}</td>
+      <td class="dim">${fmt(FIN.gmv[i])}</td>
+      <td>${fmt(FIN.rev[i])}</td>
+      <td>${fmt(FIN.gp[i])}</td>
+      <td class="${eCls}">${fmt(FIN.ebitda[i])}</td>
+      <td class="${cCls}">${fmt(FIN.cum[i])}</td>
+    </tr>`;
+  }
+  // Totals row
+  const rSum = FIN.rev.slice(startIdx,endIdx).reduce((a,b)=>a+b,0);
+  const gSum = FIN.gp.slice(startIdx,endIdx).reduce((a,b)=>a+b,0);
+  const eSum = FIN.ebitda.slice(startIdx,endIdx).reduce((a,b)=>a+b,0);
+  html += `<tr class="subtotal">
+    <td>Total</td><td>—</td><td>—</td><td>—</td>
+    <td>${fmt(rSum)}</td>
+    <td>${fmt(gSum)}</td>
+    <td class="${eSum>=0?'pos':'neg'}">${fmt(eSum)}</td>
+    <td>—</td>
+  </tr>`;
+  tbody.innerHTML = html;
+}
+
+function buildRevChart(){
+  const wrap = document.getElementById('rev-chart');
+  if(!wrap) return;
+  const maxRev = Math.max(...FIN.rev);
+  let html = '';
+  FIN.rev.forEach((r,i)=>{
+    const pct = (r/maxRev*100).toFixed(1);
+    const isY2 = i>=12&&i<24, isY3 = i>=24;
+    const barColor = isY3?'#2d6b45':isY2?'#9a6b20':'#1a1410';
+    html += `<div class="bar-row">
+      <div class="bar-month">${MONTHS[i]}</div>
+      <div class="bar-track"><div class="bar-fill rev" style="width:${pct}%;background:${barColor}"></div></div>
+      <div class="bar-val">RM ${(r/1000).toFixed(0)}K</div>
+    </div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+function initFinancials(){
+  buildMonthlyTable('y1-table',0,12);
+  buildMonthlyTable('y2-table',12,24);
+  buildMonthlyTable('y3-table',24,36);
+  buildRevChart();
+}
+
 // ── DEFAULT DATA ─────────────────────────────
 const D_ANNS = [
   {id:1,type:'pinned',title:'Seed Round Now Open',body:'The RM 200,000 seed round is officially open. Datuk Kahiril (RM 10K) and Syed Zulazri (RM 30K) committed — <strong>RM 40,000 secured</strong>. Target close: 60 days.',date:'4 Mar 2026'},
@@ -613,7 +942,7 @@ let tasks    = load('lus_tasks',  D_TASKS);
 function tryLogin(role){
   const v = document.getElementById('pwd-'+role).value;
   if(v !== CREDS[role]){ shake(role); return; }
-  if(role==='investor') go('screen-dataroom');
+  if(role==='investor'){ initFinancials(); go('screen-dataroom'); }
   else if(role==='staff'){
     const now=new Date();
     document.getElementById('staff-date').textContent = now.toLocaleDateString('en-MY',{weekday:'short',month:'short',day:'numeric'});
@@ -668,7 +997,6 @@ const SL = ()=>({done:t('stDone'),wip:t('stWip'),todo:t('stTodo')});
 
 // ── RENDER STAFF ─────────────────────────────
 function renderStaff(){
-  // Announcements
   const pinned = anns.filter(a=>a.type==='pinned').length;
   document.getElementById('ann-count-staff').textContent =
     `${anns.length} ${anns.length!==1?t('annNotices'):t('annNotice')} · ${pinned} ${t('annPinned')}`;
@@ -683,9 +1011,8 @@ function renderStaff(){
         </div>
         <div class="ann-date-col">${a.date}</div>
       </div>`).join('')
-    : `<div style="padding:32px 0;font-size:10px;color:var(--faint)">${t('noAnn')}</div>`;
+    : `<div style="padding:36px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint)">${t('noAnn')}</div>`;
 
-  // Status
   document.getElementById('status-feed-staff').innerHTML = statuses.map(s=>`
     <tr>
       <td>${s.item}</td>
@@ -693,33 +1020,16 @@ function renderStaff(){
       <td>${s.owner}</td>
     </tr>`).join('');
 
-  // Tasks
   document.getElementById('task-feed-staff').innerHTML = tasks.map((t_,i)=>`
     <div class="task-row">
       <div class="t-num">${String(i+1).padStart(2,'0')}</div>
       <div class="t-body"><div class="t-text">${t_.text}</div><div class="t-meta">${t_.meta}</div></div>
       <span class="t-badge t-${t_.p}">${PL()[t_.p]||t_.p}</span>
     </div>`).join('');
-
-  // Section titles
-  const annHdr = document.querySelector('#sv-announcements .ann-hdr-title');
-  if(annHdr) annHdr.textContent = t('annTitle');
-  const stTitle = document.querySelector('#sv-status .plain-title');
-  if(stTitle) stTitle.textContent = t('statusTitle');
-  const tkTitle = document.querySelector('#sv-tasks .plain-title');
-  if(tkTitle) tkTitle.textContent = t('tasksTitle');
-  // Table headers
-  const ths = document.querySelectorAll('#sv-status .st-table th');
-  if(ths.length>=3){
-    ths[0].textContent = lang==='bm'?'Item':'Item';
-    ths[1].textContent = lang==='bm'?'Status':'Status';
-    ths[2].textContent = lang==='bm'?'Pemilik':'Owner';
-  }
 }
 
 // ── RENDER ADMIN ─────────────────────────────
 function renderAdmin(){
-  // Announcements
   document.getElementById('adm-ann-list').innerHTML = anns.length
     ? anns.map(a=>`
       <div class="adm-row">
@@ -734,7 +1044,6 @@ function renderAdmin(){
       </div>`).join('')
     : `<div class="empty-state">${t('noAnn')}</div>`;
 
-  // Status
   document.getElementById('adm-status-list').innerHTML = statuses.length
     ? statuses.map(s=>`
       <div class="adm-row">
@@ -749,7 +1058,6 @@ function renderAdmin(){
       </div>`).join('')
     : `<div class="empty-state">${lang==='bm'?'Tiada item status':'No status items'}</div>`;
 
-  // Tasks
   document.getElementById('adm-task-list').innerHTML = tasks.length
     ? tasks.map(tk=>`
       <div class="adm-row">
@@ -786,7 +1094,6 @@ function openModal(type, id){
   };
   document.getElementById('modal-title').textContent = titles[type];
   document.getElementById('modal-body').innerHTML = buildForm(type,id);
-  // translate modal buttons
   document.querySelector('.modal-cancel').textContent = t('cancel');
   document.querySelector('.modal-save').textContent   = t('save');
   document.getElementById('modal-overlay').classList.add('open');
@@ -879,100 +1186,66 @@ let lang = 'en';
 
 const I18N = {
   en: {
-    // Login
-    tagline: 'March 2026',
-    s1: 'Platform live', s2: 'Payments operational',
-    s3: 'Phase 6 in progress', s4: 'Seed round open — RM 200K',
-    footer: 'Confidential · Authorised users only',
-    selectPortal: 'Select portal',
-    investorAccess: 'Investor Access', dataLounge: 'Data Lounge',
-    staffAccess: 'Staff Access', console: 'Console',
-    adminAccess: 'Admin Access', adminPanel: 'Admin Panel',
-    enter: 'Enter →',
-    codeHint1: 'Code: leish2026', codeHint2: 'Code: staff2026', codeHint3: 'Code: admin2026',
-    incorrectCode: 'Incorrect code',
-    // Topbars
-    confidential: 'Confidential · Seed Round',
-    exit: 'Exit ↩',
-    tabOverview: 'Overview', tabMarket: 'Market', tabProduct: 'Product',
-    tabFinancials: 'Financials', tabTeam: 'Team', tabAsk: 'The Ask',
-    tabAnnouncements: 'Announcements', tabStatus: 'Status', tabTasks: 'Tasks',
-    adminMode: 'Admin Mode',
-    // Admin panel
-    statusItems: 'Status Items', btnNew: '+ New',
-    btnEdit: 'Edit', btnDelete: 'Delete',
-    // Staff views
-    annTitle: 'Announcements', statusTitle: 'Status', tasksTitle: 'Open Tasks',
-    noAnn: 'No announcements yet.',
-    // Ann count
-    annNotice: 'notice', annNotices: 'notices', annPinned: 'pinned',
-    // Ann types
-    typePinned: 'Pinned', typeUrgent: 'Urgent', typeAction: 'Action Required', typeUpdate: 'Update',
-    // Priority / status labels
-    priHigh: 'High', priMed: 'Med', priLow: 'Low',
-    stDone: 'Done', stWip: 'In Progress', stTodo: 'Pending',
-    // Modal
-    editAnn: 'Edit Announcement', newAnn: 'New Announcement',
-    editStatus: 'Edit Status Item', newStatus: 'New Status Item',
-    editTask: 'Edit Task', newTask: 'New Task',
-    fType: 'Type', fTitle: 'Title', fBody: 'Body (HTML supported)', fDate: 'Date',
-    fItem: 'Item', fStatusText: 'Status Text', fStatusType: 'Status Type', fOwner: 'Owner',
-    fTask: 'Task', fMeta: 'Meta (team · due · owner)', fPriority: 'Priority',
-    optDone: 'Done / Live', optWip: 'In Progress', optTodo: 'Pending / Todo',
-    optHigh: 'High', optMedium: 'Medium', optLow: 'Low',
-    cancel: 'Cancel', save: 'Save →',
-    ownerLabel: 'Owner:',
-    confirmDelete: 'Delete this item?',
-    // Data Lounge static
-    dlEyebrow: 'Investor Data Lounge · March 2026',
+    tagline:'March 2026',
+    s1:'Platform live',s2:'Payments operational',s3:'Phase 6 in progress',s4:'Seed round open — RM 200K',
+    footer:'Confidential · Authorised users only',
+    selectPortal:'Select portal',
+    investorAccess:'Investor Access',dataLounge:'Data Lounge',
+    staffAccess:'Staff Access',console:'Console',
+    adminAccess:'Admin Access',adminPanel:'Admin Panel',
+    enter:'Enter →',
+    codeHint1:'Code: leish2026',codeHint2:'Code: staff2026',codeHint3:'Code: admin2026',
+    incorrectCode:'Incorrect code',
+    confidential:'Confidential · Seed Round',exit:'Exit ↩',
+    tabOverview:'Overview',tabMarket:'Market',tabProduct:'Product',
+    tabFinancials:'Financials',tabTeam:'Team',tabAsk:'The Ask',
+    tabAnnouncements:'Announcements',tabStatus:'Status',tabTasks:'Tasks',adminMode:'Admin Mode',
+    statusItems:'Status Items',btnNew:'+ New',btnEdit:'Edit',btnDelete:'Delete',
+    annTitle:'Announcements',statusTitle:'Status',tasksTitle:'Open Tasks',noAnn:'No announcements yet.',
+    annNotice:'notice',annNotices:'notices',annPinned:'pinned',
+    typePinned:'Pinned',typeUrgent:'Urgent',typeAction:'Action Required',typeUpdate:'Update',
+    priHigh:'High',priMed:'Med',priLow:'Low',stDone:'Done',stWip:'In Progress',stTodo:'Pending',
+    editAnn:'Edit Announcement',newAnn:'New Announcement',
+    editStatus:'Edit Status Item',newStatus:'New Status Item',
+    editTask:'Edit Task',newTask:'New Task',
+    fType:'Type',fTitle:'Title',fBody:'Body (HTML supported)',fDate:'Date',
+    fItem:'Item',fStatusText:'Status Text',fStatusType:'Status Type',fOwner:'Owner',
+    fTask:'Task',fMeta:'Meta (team · due · owner)',fPriority:'Priority',
+    optDone:'Done / Live',optWip:'In Progress',optTodo:'Pending / Todo',
+    optHigh:'High',optMedium:'Medium',optLow:'Low',
+    cancel:'Cancel',save:'Save →',ownerLabel:'Owner:',confirmDelete:'Delete this item?',
+    dlEyebrow:'Investor Data Lounge · March 2026',
   },
   bm: {
-    // Login
-    tagline: 'Mac 2026',
-    s1: 'Platform aktif', s2: 'Pembayaran beroperasi',
-    s3: 'Fasa 6 sedang berjalan', s4: 'Pusingan benih dibuka — RM 200K',
-    footer: 'Sulit · Pengguna yang diberi kuasa sahaja',
-    selectPortal: 'Pilih portal',
-    investorAccess: 'Akses Pelabur', dataLounge: 'Ruang Data',
-    staffAccess: 'Akses Kakitangan', console: 'Konsol',
-    adminAccess: 'Akses Pentadbir', adminPanel: 'Panel Pentadbir',
-    enter: 'Masuk →',
-    codeHint1: 'Kod: leish2026', codeHint2: 'Kod: staff2026', codeHint3: 'Kod: admin2026',
-    incorrectCode: 'Kod tidak sah',
-    // Topbars
-    confidential: 'Sulit · Pusingan Benih',
-    exit: 'Keluar ↩',
-    tabOverview: 'Gambaran', tabMarket: 'Pasaran', tabProduct: 'Produk',
-    tabFinancials: 'Kewangan', tabTeam: 'Pasukan', tabAsk: 'Permintaan',
-    tabAnnouncements: 'Pengumuman', tabStatus: 'Status', tabTasks: 'Tugasan',
-    adminMode: 'Mod Pentadbir',
-    // Admin panel
-    statusItems: 'Item Status', btnNew: '+ Tambah',
-    btnEdit: 'Sunting', btnDelete: 'Padam',
-    // Staff views
-    annTitle: 'Pengumuman', statusTitle: 'Status', tasksTitle: 'Tugasan Terbuka',
-    noAnn: 'Tiada pengumuman lagi.',
-    // Ann count
-    annNotice: 'notis', annNotices: 'notis', annPinned: 'disemat',
-    // Ann types
-    typePinned: 'Disemat', typeUrgent: 'Mendesak', typeAction: 'Tindakan Diperlukan', typeUpdate: 'Kemaskini',
-    // Priority / status labels
-    priHigh: 'Tinggi', priMed: 'Sederhana', priLow: 'Rendah',
-    stDone: 'Selesai', stWip: 'Sedang Berjalan', stTodo: 'Belum Selesai',
-    // Modal
-    editAnn: 'Sunting Pengumuman', newAnn: 'Pengumuman Baharu',
-    editStatus: 'Sunting Item Status', newStatus: 'Item Status Baharu',
-    editTask: 'Sunting Tugasan', newTask: 'Tugasan Baharu',
-    fType: 'Jenis', fTitle: 'Tajuk', fBody: 'Kandungan (HTML disokong)', fDate: 'Tarikh',
-    fItem: 'Item', fStatusText: 'Teks Status', fStatusType: 'Jenis Status', fOwner: 'Pemilik',
-    fTask: 'Tugasan', fMeta: 'Meta (pasukan · tarikh · pemilik)', fPriority: 'Keutamaan',
-    optDone: 'Selesai / Aktif', optWip: 'Sedang Berjalan', optTodo: 'Belum Selesai',
-    optHigh: 'Tinggi', optMedium: 'Sederhana', optLow: 'Rendah',
-    cancel: 'Batal', save: 'Simpan →',
-    ownerLabel: 'Pemilik:',
-    confirmDelete: 'Padam item ini?',
-    // Data Lounge static
-    dlEyebrow: 'Ruang Data Pelabur · Mac 2026',
+    tagline:'Mac 2026',
+    s1:'Platform aktif',s2:'Pembayaran beroperasi',s3:'Fasa 6 sedang berjalan',s4:'Pusingan benih dibuka — RM 200K',
+    footer:'Sulit · Pengguna yang diberi kuasa sahaja',
+    selectPortal:'Pilih portal',
+    investorAccess:'Akses Pelabur',dataLounge:'Ruang Data',
+    staffAccess:'Akses Kakitangan',console:'Konsol',
+    adminAccess:'Akses Pentadbir',adminPanel:'Panel Pentadbir',
+    enter:'Masuk →',
+    codeHint1:'Kod: leish2026',codeHint2:'Kod: staff2026',codeHint3:'Kod: admin2026',
+    incorrectCode:'Kod tidak sah',
+    confidential:'Sulit · Pusingan Benih',exit:'Keluar ↩',
+    tabOverview:'Gambaran',tabMarket:'Pasaran',tabProduct:'Produk',
+    tabFinancials:'Kewangan',tabTeam:'Pasukan',tabAsk:'Permintaan',
+    tabAnnouncements:'Pengumuman',tabStatus:'Status',tabTasks:'Tugasan',adminMode:'Mod Pentadbir',
+    statusItems:'Item Status',btnNew:'+ Tambah',btnEdit:'Sunting',btnDelete:'Padam',
+    annTitle:'Pengumuman',statusTitle:'Status',tasksTitle:'Tugasan Terbuka',noAnn:'Tiada pengumuman lagi.',
+    annNotice:'notis',annNotices:'notis',annPinned:'disemat',
+    typePinned:'Disemat',typeUrgent:'Mendesak',typeAction:'Tindakan Diperlukan',typeUpdate:'Kemaskini',
+    priHigh:'Tinggi',priMed:'Sederhana',priLow:'Rendah',stDone:'Selesai',stWip:'Sedang Berjalan',stTodo:'Belum Selesai',
+    editAnn:'Sunting Pengumuman',newAnn:'Pengumuman Baharu',
+    editStatus:'Sunting Item Status',newStatus:'Item Status Baharu',
+    editTask:'Sunting Tugasan',newTask:'Tugasan Baharu',
+    fType:'Jenis',fTitle:'Tajuk',fBody:'Kandungan (HTML disokong)',fDate:'Tarikh',
+    fItem:'Item',fStatusText:'Teks Status',fStatusType:'Jenis Status',fOwner:'Pemilik',
+    fTask:'Tugasan',fMeta:'Meta (pasukan · tarikh · pemilik)',fPriority:'Keutamaan',
+    optDone:'Selesai / Aktif',optWip:'Sedang Berjalan',optTodo:'Belum Selesai',
+    optHigh:'Tinggi',optMedium:'Sederhana',optLow:'Rendah',
+    cancel:'Batal',save:'Simpan →',ownerLabel:'Pemilik:',confirmDelete:'Padam item ini?',
+    dlEyebrow:'Ruang Data Pelabur · Mac 2026',
   }
 };
 
@@ -983,29 +1256,20 @@ function setLang(l){
   document.getElementById('btn-en').classList.toggle('active', l==='en');
   document.getElementById('btn-bm').classList.toggle('active', l==='bm');
   applyLang();
-  // Re-render dynamic content if currently visible
   if(document.getElementById('screen-staff').classList.contains('active')) renderStaff();
   if(document.getElementById('screen-admin').classList.contains('active')) renderAdmin();
 }
 
 function applyLang(){
-  // Apply all static data-i18n elements
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     el.textContent = t(el.getAttribute('data-i18n'));
   });
-  // Placeholders
-  document.getElementById('pwd-investor').placeholder = lang==='bm' ? 'kod akses' : 'access code';
-  document.getElementById('pwd-staff').placeholder    = lang==='bm' ? 'kod kakitangan' : 'staff code';
-  document.getElementById('pwd-admin').placeholder    = lang==='bm' ? 'kod pentadbir' : 'admin code';
-  // Data Lounge eyebrow
+  document.getElementById('pwd-investor').placeholder = lang==='bm'?'kod akses':'access code';
+  document.getElementById('pwd-staff').placeholder    = lang==='bm'?'kod kakitangan':'staff code';
+  document.getElementById('pwd-admin').placeholder    = lang==='bm'?'kod pentadbir':'admin code';
   const dlEye = document.querySelector('#dr-overview .dr-eyebrow');
   if(dlEye) dlEye.textContent = t('dlEyebrow');
 }
 </script>
 </body>
-<!-- ══ LANG TOGGLE (floating) ══════════════════ -->
-<div id="lang-toggle" style="position:fixed;bottom:22px;right:22px;z-index:999;display:flex;background:#130e11;border:1px solid #3a2830;overflow:hidden;">
-  <button id="btn-en" onclick="setLang('en')" style="padding:7px 13px;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;background:#f0ecea;color:#0a0709;border:none;cursor:pointer;transition:all .15s;">EN</button>
-  <button id="btn-bm" onclick="setLang('bm')" style="padding:7px 13px;font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;background:none;color:#7a6570;border:none;cursor:pointer;transition:all .15s;">BM</button>
-</div>
-</html
+</html>
