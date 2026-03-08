@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Leish! Suite</title>
+<title>Leish! Data Suite</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+
+
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -298,6 +302,25 @@ option{background:var(--bg);}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
 
+/* ── LIVE SYNC STATUS ──────────────────────── */
+.sync-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(247,244,239,.4);padding:4px 0;
+}
+.sync-pip{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  background:rgba(247,244,239,.15);transition:background .4s;
+}
+.sync-pill.live .sync-pip{background:#4a8a60;animation:pip-pulse 2.4s ease infinite;}
+.sync-pill.saving .sync-pip{background:#c4891a;}
+.sync-pill.offline .sync-pip{background:#8b2222;}
+@keyframes pip-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(74,138,96,.6);}
+  50%{box-shadow:0 0 0 5px rgba(74,138,96,0);}
+}
+
 /* ── LANG TOGGLE ───────────────────────────── */
 #lang-toggle{
   position:fixed;bottom:28px;right:28px;z-index:500;
@@ -478,7 +501,7 @@ option{background:var(--bg);}
   <div class="login-id">
     <div class="login-wordmark">LUS — 01</div>
     <div>
-      <div class="login-name">Leish!<br><em>Update</em><br>Suite</div>
+      <div class="login-name">Leish!<br><em>Data</em><br>Suite</div>
       <div class="login-tagline" data-i18n="tagline">March 2026</div>
       <div class="ls-list">
         <div class="ls-row"><div class="ls-dot on"></div><span data-i18n="s1">Platform live</span></div>
@@ -548,6 +571,7 @@ option{background:var(--bg);}
     </div>
     <div class="bar-right">
       <span class="bar-meta" data-i18n="confidential">Confidential · Seed Round</span>
+      <span class="sync-pill" id="sync-dr"><span class="sync-pip"></span><span class="sync-lbl">connecting</span></span>
       <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
     </div>
   </div>
@@ -631,7 +655,7 @@ option{background:var(--bg);}
         </tr></thead>
         <tbody>
           <tr><td data-i18n="prodFrontend">Frontend</td><td>Next.js 16 / React 19 / TypeScript</td><td class="tgr" data-i18n="statusLive">Live</td></tr>
-          <tr><td data-i18n="prodAuth">Auth &amp; Database</td><td>Supabase (PostgreSQL)</td><td class="tgr" data-i18n="statusLive">Live</td></tr>
+          <tr><td data-i18n="prodAuth">Auth &amp; Database</td><td>JSONBin (REST)</td><td class="tgr" data-i18n="statusLive">Live</td></tr>
           <tr><td data-i18n="prodPayments">Payments</td><td>HitPay &amp; Billplz</td><td class="tgr" data-i18n="statusLive">Live</td></tr>
           <tr><td data-i18n="prodAI">AI Matching</td><td>AI Concierge v2</td><td class="tgr" data-i18n="statusLive">Live</td></tr>
           <tr><td data-i18n="prodHosting">Hosting</td><td>Vercel + Cloudflare</td><td class="tgr" data-i18n="statusLive">Live</td></tr>
@@ -844,6 +868,7 @@ option{background:var(--bg);}
       <div style="display:flex;align-items:center;gap:14px;">
         <span class="bar-meta" id="staff-user"></span>
         <span class="bar-meta" id="staff-date"></span>
+        <span class="sync-pill" id="sync-staff"><span class="sync-pip"></span><span class="sync-lbl">connecting</span></span>
         <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
       </div>
     </div>
@@ -888,6 +913,7 @@ option{background:var(--bg);}
       <div class="bar-brand"><strong>Leish</strong> <span style="color:#c4891a;" data-i18n="adminPanel">/ Admin Panel</span></div>
       <div style="display:flex;align-items:center;gap:14px;">
         <span class="bar-meta" style="color:#c4891a;" data-i18n="adminMode">Admin Mode</span>
+        <span class="sync-pill" id="sync-admin"><span class="sync-pip"></span><span class="sync-lbl">connecting</span></span>
         <button class="exit-btn" onclick="logout()" data-i18n="exit">Exit ↩</button>
       </div>
     </div>
@@ -1081,23 +1107,210 @@ const D_TASKS = [
   {id:10,text:'Product Hunt launch page draft',meta:'Marketing · Due 20 Mar',p:'med'},
 ];
 
-// ── STATE ────────────────────────────────────
-function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
-function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-function nextId(a){return a.length?Math.max(...a.map(x=>x.id))+1:1;}
+// ── JSONBIN CONFIG ───────────────────────────
+// ⚠️  Three values to fill in — takes ~2 minutes:
+//
+//  1. Go to https://jsonbin.io → Sign up free (no credit card)
+//  2. API Keys → Master Key → copy it → paste as JB_KEY below
+//  3. Click "+ Create Bin" three times, one for each collection.
+//     For each new bin, paste this starter JSON: {"items":[]}
+//     Copy each Bin ID from the URL bar → paste below.
+//
+//  That's it. Host on Vercel, share the URL. All portals stay in sync
+//  via 5-second polling — fast enough for announcements, status & tasks.
+//
+const JB_KEY     = '$2a$10$Bys46hx9tT8tDTEb9l4CO.koFGqOtG7GsDHCr.eom8wjjYAC5LHGG';   // $2a$10$...
+const JB_BIN_ANNS    = '69adc4a143b1c97be9c1d8ed';   // 6-char hex id
+const JB_BIN_STATUS  = '69adc4a1ae596e708f6da3a0';
+const JB_BIN_TASKS   = '69adc4a2d0ea881f40fd44d5';
 
-let anns     = load('lus_anns',   D_ANNS);
-let statuses = load('lus_status', D_STATUS);
-let tasks    = load('lus_tasks',  D_TASKS);
+// ── REALTIME STATE ────────────────────────────
+let anns = [], statuses = [], tasks = [];
+let dbOk = false, _pollTimer = null;
+
+function nextId(a){ return a.length ? Math.max(...a.map(x=>x.id))+1 : 1; }
+
+function setSyncUI(state, label){
+  ['sync-dr','sync-staff','sync-admin'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.className = 'sync-pill ' + state;
+    el.querySelector('.sync-lbl').textContent = label;
+  });
+}
+
+function isActive(id){ return document.getElementById(id)?.classList.contains('active'); }
+
+// ── JSONBIN HELPERS ───────────────────────────
+const JB_BASE = 'https://api.jsonbin.io/v3/b';
+const JB_HDRS = { 'X-Master-Key': JB_KEY, 'Content-Type': 'application/json' };
+
+async function jbGet(binId){
+  const r = await fetch(`${JB_BASE}/${binId}/latest`, { headers: {'X-Master-Key': JB_KEY} });
+  if(!r.ok) throw new Error(`GET ${binId}: ${r.status}`);
+  const d = await r.json();
+  return d.record.items || [];
+}
+
+async function jbSet(binId, items){
+  const r = await fetch(`${JB_BASE}/${binId}`, {
+    method: 'PUT',
+    headers: JB_HDRS,
+    body: JSON.stringify({ items }),
+  });
+  if(!r.ok) throw new Error(`PUT ${binId}: ${r.status}`);
+}
+
+// ── INIT ──────────────────────────────────────
+function initDB(){
+  try {
+    if(JB_KEY.includes('REPLACE')) throw new Error('JSONBin not configured');
+    dbOk = true;
+  } catch(e){
+    console.warn('JSONBin not configured — using localStorage fallback:', e.message);
+    dbOk = false;
+    lsFallbackLoad();
+    setSyncUI('offline','local only');
+  }
+}
+
+// ── SEED DEFAULTS ON FIRST LAUNCH ────────────
+async function seedIfEmpty(){
+  if(!dbOk) return;
+  try {
+    const [a,s,tk] = await Promise.all([jbGet(JB_BIN_ANNS), jbGet(JB_BIN_STATUS), jbGet(JB_BIN_TASKS)]);
+    if(!a.length)  await jbSet(JB_BIN_ANNS,   D_ANNS);
+    if(!s.length)  await jbSet(JB_BIN_STATUS,  D_STATUS);
+    if(!tk.length) await jbSet(JB_BIN_TASKS,   D_TASKS);
+  } catch(e){ console.warn('Seed skipped:', e.message); }
+}
+
+// ── FETCH ALL DATA ────────────────────────────
+async function fetchAll(){
+  if(!dbOk) return;
+  try {
+    const [a,s,tk] = await Promise.all([
+      jbGet(JB_BIN_ANNS),
+      jbGet(JB_BIN_STATUS),
+      jbGet(JB_BIN_TASKS),
+    ]);
+    anns     = [...a].sort((x,y)=>y.id-x.id);
+    statuses = [...s].sort((x,y)=>x.id-y.id);
+    tasks    = [...tk].sort((x,y)=>y.id-x.id);
+    setSyncUI('live','live');
+  } catch(e){
+    console.error('fetchAll:', e);
+    setSyncUI('offline','error');
+  }
+}
+
+// ── POLLING (every 5 seconds) ─────────────────
+// JSONBin has no WebSocket push. We poll every 5s —
+// fast enough for ops use while staying well within the free tier rate limit.
+let syncStarted = false;
+async function startSync(){
+  if(!dbOk){ lsFallbackLoad(); return; }
+  if(syncStarted) return;
+  syncStarted = true;
+
+  setSyncUI('saving','loading…');
+  await fetchAll();
+
+  const rerender = ()=>{
+    if(isActive('screen-staff')) renderStaff();
+    if(isActive('screen-admin')) renderAdmin();
+  };
+
+  rerender(); // initial render with fetched data
+
+  _pollTimer = setInterval(async ()=>{
+    const prev = {
+      anns:     JSON.stringify(anns),
+      statuses: JSON.stringify(statuses),
+      tasks:    JSON.stringify(tasks),
+    };
+    await fetchAll();
+    // Only re-render if data actually changed
+    if(
+      JSON.stringify(anns)     !== prev.anns     ||
+      JSON.stringify(statuses) !== prev.statuses ||
+      JSON.stringify(tasks)    !== prev.tasks
+    ){
+      rerender();
+    }
+  }, 5000);
+}
+
+function stopSync(){
+  if(_pollTimer){ clearInterval(_pollTimer); _pollTimer=null; }
+  syncStarted = false;
+}
+
+// ── WRITE ─────────────────────────────────────
+async function dbSet(col, obj, isNew){
+  if(!dbOk){ lsSave('lus_'+col, [obj]); return; }
+  setSyncUI('saving','saving…');
+  try {
+    const binId = col==='anns' ? JB_BIN_ANNS : col==='status' ? JB_BIN_STATUS : JB_BIN_TASKS;
+    const arr   = col==='anns' ? anns : col==='status' ? statuses : tasks;
+    let updated;
+    if(isNew){
+      updated = [obj, ...arr]; // prepend newest
+    } else {
+      updated = arr.map(x=>x.id===obj.id ? obj : x);
+    }
+    await jbSet(binId, updated);
+    // Update local state immediately for snappy UI
+    if(col==='anns')   anns     = updated;
+    if(col==='status') statuses = updated;
+    if(col==='tasks')  tasks    = updated;
+    setSyncUI('live','live');
+  } catch(e){ console.error('dbSet:', e); setSyncUI('offline','error'); }
+}
+
+async function dbDelete(col, id){
+  if(!dbOk){
+    if(col==='anns')   { anns=anns.filter(x=>x.id!==id);         lsSave('lus_anns',anns); }
+    if(col==='status') { statuses=statuses.filter(x=>x.id!==id); lsSave('lus_status',statuses); }
+    if(col==='tasks')  { tasks=tasks.filter(x=>x.id!==id);       lsSave('lus_tasks',tasks); }
+    renderAdmin(); return;
+  }
+  setSyncUI('saving','saving…');
+  try {
+    const binId  = col==='anns' ? JB_BIN_ANNS : col==='status' ? JB_BIN_STATUS : JB_BIN_TASKS;
+    const arr    = col==='anns' ? anns : col==='status' ? statuses : tasks;
+    const updated = arr.filter(x=>x.id!==id);
+    await jbSet(binId, updated);
+    if(col==='anns')   anns     = updated;
+    if(col==='status') statuses = updated;
+    if(col==='tasks')  tasks    = updated;
+    setSyncUI('live','live');
+    renderAdmin();
+  } catch(e){ console.error('dbDelete:', e); setSyncUI('offline','error'); }
+}
+
+// ── LOCALSTORAGE FALLBACK ─────────────────────
+function lsSave(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function lsFallbackLoad(){
+  function ls(k,d){ try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;} }
+  anns     = ls('lus_anns',   D_ANNS);
+  statuses = ls('lus_status', D_STATUS);
+  tasks    = ls('lus_tasks',  D_TASKS);
+}
 
 // ── AUTH ─────────────────────────────────────
 ['investor','staff','admin'].forEach(r=>{
   document.getElementById('pwd-'+r).addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin(r);});
 });
 
+// Boot JSONBin immediately (before any login)
+initDB();
+seedIfEmpty();
+
 function tryLogin(role){
   const v = document.getElementById('pwd-'+role).value;
   if(v !== CREDS[role]){ shake(role); return; }
+  startSync(); // attach real-time listeners once on first login
   if(role==='investor'){ initFinancials(); go('screen-dataroom'); }
   else if(role==='staff'){
     const now=new Date();
@@ -1110,6 +1323,7 @@ function tryLogin(role){
 }
 
 function logout(){
+  stopSync(); // stop polling on exit
   go('screen-login');
   ['investor','staff','admin'].forEach(r=>{
     document.getElementById('pwd-'+r).value='';
@@ -1232,10 +1446,11 @@ function renderAdmin(){
 // ── DELETE ───────────────────────────────────
 function del(type,id){
   if(!confirm(t('confirmDelete'))) return;
-  if(type==='ann')    { anns=anns.filter(x=>x.id!==id);         save('lus_anns',anns); }
-  if(type==='status') { statuses=statuses.filter(x=>x.id!==id); save('lus_status',statuses); }
-  if(type==='task')   { tasks=tasks.filter(x=>x.id!==id);       save('lus_tasks',tasks); }
-  renderAdmin();
+  // dbDelete writes to JSONBin; real-time listener auto-refreshes UI
+  if(type==='ann')    dbDelete('anns',   id);
+  if(type==='status') dbDelete('status', id);
+  if(type==='task')   dbDelete('tasks',  id);
+  // Fallback (localStorage mode): renderAdmin already called inside dbDelete
 }
 
 // ── MODAL ────────────────────────────────────
@@ -1311,26 +1526,28 @@ function g(id){ const el=document.getElementById(id); return el?el.value.trim():
 
 function saveModal(){
   const {type,id} = mCtx;
+  const isNew = !id;
   if(type==='ann'){
     const obj={id:id||nextId(anns),type:g('f-type'),title:g('f-title'),body:g('f-body'),date:g('f-date')};
     if(!obj.title) return;
     if(id){ const i=anns.findIndex(x=>x.id===id); anns[i]=obj; } else anns.unshift(obj);
-    save('lus_anns',anns);
+    dbSet('anns', obj, isNew);
   }
   if(type==='status'){
     const obj={id:id||nextId(statuses),item:g('f-item'),status:g('f-status'),st:g('f-st'),owner:g('f-owner')};
     if(!obj.item) return;
     if(id){ const i=statuses.findIndex(x=>x.id===id); statuses[i]=obj; } else statuses.push(obj);
-    save('lus_status',statuses);
+    dbSet('status', obj, isNew);
   }
   if(type==='task'){
     const obj={id:id||nextId(tasks),text:g('f-text'),meta:g('f-meta'),p:g('f-p')};
     if(!obj.text) return;
     if(id){ const i=tasks.findIndex(x=>x.id===id); tasks[i]=obj; } else tasks.unshift(obj);
-    save('lus_tasks',tasks);
+    dbSet('tasks', obj, isNew);
   }
   closeModal();
-  renderAdmin();
+  // Real-time listener refreshes UI automatically; manual render for localStorage fallback
+  if(!dbOk) renderAdmin();
 }
 
 function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
